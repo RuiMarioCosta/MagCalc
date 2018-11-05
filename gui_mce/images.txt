@@ -1,0 +1,42 @@
+pyuic5 gui_mce.ui -o gui_mce.py -x
+
+
+import os
+path = os.path.dirname(os.path.abspath(__file__))
+
+self.label_J.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_J.png")))
+self.label_gJ.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_gJ.png")))
+self.label_TC1.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_TC1.png")))
+self.label_TC2.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_TC2.png")))
+self.label_ThetaD1.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_ThetaD1.png")))
+self.label_ThetaD2.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_ThetaD2.png")))
+self.label_DeltaF.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_DeltaF.png")))
+self.label_N.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_N.png")))
+self.label_Nm.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_Nm.png")))
+
+self.label_Ti.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_Ti.png")))
+self.label_Tf.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_Tf.png")))
+self.label_DeltaT.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_DeltaT.png")))
+self.label_Bi.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_Bi.png")))
+self.label_Bf.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_Bf.png")))
+self.label_Deltasigma.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_Deltasigma.png")))
+
+icon.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_M_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon1.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_SM_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon2.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_F_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon3.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_M_vs_B.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon4.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_SL_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon5.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_F_vs_B.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon6.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_M_vs_TB.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon7.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_Stot_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon8.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_Ts_vs_B.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon9.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_U_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon10.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_DeltaS_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon11.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_FM_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon12.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_Mhys_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon13.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_maxDeltaS_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon14.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_FM_vs_sigma.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon15.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_SM_vs_sigma.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon16.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_FL_vs_T.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon17.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_Ftot_vs_sigma.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+icon18.addPixmap(QtGui.QPixmap(os.path.join(path, "fig_Ftotheatcool_vs_TB.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)

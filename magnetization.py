@@ -88,8 +88,7 @@ def Brillouin(T, B, J, gJ, TC, lamb, Nm):
 
 
 # Reduced Magnetization of the Stable Phase
-def Brillouin_stable(T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1, theta_D2,
-                     F01, F02, gJ, Nm, N):
+def Brillouin_stable(T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1, theta_D2, F01, F02, gJ, Nm, N):
     """Returns the magnetization of the system with lowest free energy, i.e., the stable one.
 
     Parameters
@@ -114,8 +113,8 @@ def Brillouin_stable(T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1, theta_D2,
     y : scalar, 2D array
         Magnetization corresponding to the stable phase.
     """
-    sigma1 = Brillouin(T, B, J1, gJ, TC1, lamb1, Nm) # magnetization of structure 1
-    sigma2 = Brillouin(T, B, J2, gJ, TC2, lamb2, Nm) # magnetization of structure 2
+    sigma1 = Brillouin(T, B, J1, gJ, TC1, lamb1, Nm) # magnetization of phase 1
+    sigma2 = Brillouin(T, B, J2, gJ, TC2, lamb2, Nm) # magnetization of phase 2
 
     F1 = free.F(T, B, J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01) # free energy of phase 1
     F2 = free.F(T, B, J2, gJ, TC2, lamb2, Nm, theta_D2, N, F02) # free energy of phase 2
@@ -127,63 +126,6 @@ def Brillouin_stable(T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1, theta_D2,
 
     return sigma_stable
 
-
-
-# Gaussian Distribution
-def Gauss(T, mu, var): # T - Variable, mu - Average, var - Variance
-    """Gaussian/normal distribution normalized to 1.
-
-    Parameters
-    ---------
-    T : array
-        Temperatures.
-    mu : scalar
-        Average temperature.
-    var : scalar
-        Variance of the temperature.
-
-    Returns
-    -------
-    y : array
-        Gaussian/normal distribution.
-    """
-    return 1./np.sqrt(2*np.pi*var)*np.exp(-1.*((T - mu)**2.)/(2.*var))
-
-
-# Reduced Magnetization with Gaussian Distribution of Tc's
-def Brillouin_Gauss(T, B, J, TC, lamb, var):
-    """Reduced magnetization for several Curie temperatures
-    with a normal distribution.
-
-    Parameters
-    ---------
-    T : 2D array
-        Temperatures.
-    B : 2D array
-        Magnetic fields.
-    J : scalar
-        Total angular momentum.
-    TC : scalar
-        Value of the average Curie temperature.
-    lamb : scalar
-        Value of the strength of the parameter of the Molecular Field.
-
-
-    Returns
-    -------
-    y : 2D array
-        Reduced magnetization.
-    """
-
-    TCs = np.where(Gauss(T[0], TC, var) > 0.05*Gauss(TC, TC, var))[0] # index of temperatures
-
-    TCs = T[0][TCs[0]:TCs[-1]+1] # temperatures
-
-    sigma = np.zeros(np.shape(T))
-    for tc in TCs:
-        sigma += Gauss(tc, TC, var)*Brillouin(T, B, J, TC, lamb)
-
-    return sigma
 
 
 # Magnetic Susceptibility
@@ -228,6 +170,7 @@ def RedMag_heat(T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2, theta_D2, F
     return sigmaheat
 
 
+
 # Reduced Magnetization as a Function of Applied Field on Cooling
 def RedMag_cool(T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2, theta_D2, F02, gJ, Nm, N):
     """Reduced magnetization as a function of magnetic field on cooling.
@@ -263,13 +206,10 @@ def RedMag_cool(T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2, theta_D2, F
 
 
 if __name__ == "__main__":
-    from variables import *
-    print type(1.), type(TT), type(Delta_T)
+    from variables import * # import variables to use in functions
 
     print Brillouin(5., 1., J1, gJ, TC1, lamb1, Nm)
     #print Brillouin(5., Delta_B, J1, gJ, TC1, lamb1, Nm)
     #print Brillouin(TT, BB, J1, gJ, TC1, lamb1, Nm)
 
-    print TT.shape, Delta_T.shape, len(TT.shape), len(Delta_T.shape)
-    var1, var2 = TT.shape
-    print var1, var2
+    print Brillouin_stable(100., 1., J1, J2, TC1, TC2, lamb1, lamb2, theta_D1, theta_D2, F01, F02, gJ, Nm, N)
