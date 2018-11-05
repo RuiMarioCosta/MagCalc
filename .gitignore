@@ -3,3 +3,6 @@ DataBase_MCE
 *png
 */
 profiling.py
+hysteresis.py
+other_functions.py
+setup.py
