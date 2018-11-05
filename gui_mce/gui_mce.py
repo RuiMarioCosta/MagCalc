@@ -635,7 +635,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
+
 #        self.label_J.setPixmap(QtGui.QPixmap(os.path.join(path, "fig_J.png")))
         self.label_J.setPixmap(QtGui.QPixmap("gui_mce/fig_J.png"))
         self.label_gJ.setPixmap(QtGui.QPixmap("gui_mce/fig_gJ.png"))
@@ -646,7 +646,7 @@ class Ui_MainWindow(object):
         self.label_DeltaF.setPixmap(QtGui.QPixmap("gui_mce/fig_DeltaF.png"))
         self.label_N.setPixmap(QtGui.QPixmap("gui_mce/fig_N.png"))
         self.label_Nm.setPixmap(QtGui.QPixmap("gui_mce/fig_Nm.png"))
-        
+
         self.label_Ti.setPixmap(QtGui.QPixmap("gui_mce/fig_Ti.png"))
         self.label_Tf.setPixmap(QtGui.QPixmap("gui_mce/fig_Tf.png"))
         self.label_DeltaT.setPixmap(QtGui.QPixmap("gui_mce/fig_DeltaT.png"))
@@ -654,7 +654,7 @@ class Ui_MainWindow(object):
         self.label_Bf.setPixmap(QtGui.QPixmap("gui_mce/fig_Bf.png"))
         self.label_DeltaB.setPixmap(QtGui.QPixmap("gui_mce/fig_DeltaB.png"))
         self.label_Deltasigma.setPixmap(QtGui.QPixmap("gui_mce/fig_Deltasigma.png"))
-        
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -670,7 +670,7 @@ class Ui_MainWindow(object):
         self.label_TC1.setToolTip(_translate("MainWindow", "Curie Temperature of Structure 1"))
         self.label_TC2.setToolTip(_translate("MainWindow", "Curie Temperature of Structure 2"))
         self.label_ThetaD1.setToolTip(_translate("MainWindow", "Debye Temperature of Structure 1"))
-        self.label_ThetaD2.setToolTip(_translate("MainWindow", "Debye Temperature of Strucutre 2"))
+        self.label_ThetaD2.setToolTip(_translate("MainWindow", "Debye Temperature of Structure 2"))
         self.label_DeltaF.setToolTip(_translate("MainWindow", "Free Energy Difference at 0 K"))
         self.label_N.setToolTip(_translate("MainWindow", "Number of Atoms in a Unit Cell"))
         self.label_Nm.setToolTip(_translate("MainWindow", "Number of Magnetic Moment in a Unit Cell"))

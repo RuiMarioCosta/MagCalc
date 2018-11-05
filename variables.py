@@ -156,6 +156,10 @@ Bf = 5.
 delta_B = 1.
 Bf = Bf + delta_B
 
+# Reduced Magnetization
+dsigma = 1e-3 # recomended 1e-5 ?
+sig = np.arange(-1., 1.+dsigma, dsigma)
+
 
 #==============================================================================
 # Other Variables (used in the program)

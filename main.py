@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# should raise and exception# -*- coding: utf-8 -*-
 """
 Created on Thu Feb 02 17:50:53 2017
 
@@ -260,8 +260,7 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
             return True
         else:
             print 'Inputs missing or inputs type wrong.\nCheck inputs.'
-            QtWidgets.QMessageBox.about(self, 'Error',('Inputs missing or'
-                                        'inputs type wrong.\nCheck inputs.'))
+            QtWidgets.QMessageBox.about(self, 'Error',('Inputs missing or inputs type wrong.\nCheck inputs.'))
             return False
 
     def is_number(self, n):
