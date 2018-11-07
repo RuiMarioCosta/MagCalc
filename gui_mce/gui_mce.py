@@ -13,7 +13,7 @@ path = os.path.dirname(os.path.abspath(__file__))
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(748, 1664)
+        MainWindow.resize(748, 860)
         MainWindow.setStatusTip("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")

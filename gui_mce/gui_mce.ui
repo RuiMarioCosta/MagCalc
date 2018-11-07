@@ -58,13 +58,13 @@
        <widget class="QLineEdit" name="lineEdit_Name">
         <property name="minimumSize">
          <size>
-          <width>191</width>
+          <width>180</width>
           <height>20</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>191</width>
+          <width>180</width>
           <height>20</height>
          </size>
         </property>
@@ -99,13 +99,13 @@
        <widget class="QComboBox" name="comboBox_Database">
         <property name="minimumSize">
          <size>
-          <width>181</width>
+          <width>180</width>
           <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>181</width>
+          <width>180</width>
           <height>22</height>
          </size>
         </property>
@@ -115,13 +115,13 @@
        <widget class="QPushButton" name="pushButton_Save">
         <property name="minimumSize">
          <size>
-          <width>75</width>
+          <width>90</width>
           <height>23</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>75</width>
+          <width>90</width>
           <height>23</height>
          </size>
         </property>
@@ -134,13 +134,13 @@
        <widget class="QPushButton" name="pushButton_Delete">
         <property name="minimumSize">
          <size>
-          <width>75</width>
+          <width>90</width>
           <height>23</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>75</width>
+          <width>90</width>
           <height>23</height>
          </size>
         </property>
@@ -1731,7 +1731,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

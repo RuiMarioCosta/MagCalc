@@ -11,13 +11,8 @@ from scipy.optimize import fmin
 
 import free_energy as free
 
-mu_B = 5.7883818066*(10**(-5)) # eV T^-1
-k_B = 8.6173324*(10**(-5)) # eV K^-1
-
-
-#==============================================================================
-# Functions
-#==============================================================================
+mu_B = 5.7883818066*(10**(-5))  # eV T^-1
+k_B = 8.6173324*(10**(-5))  # eV K^-1
 
 
 def Brillouin(T, B, J, gJ, TC, lamb, Nm):
@@ -50,37 +45,42 @@ def Brillouin(T, B, J, gJ, TC, lamb, Nm):
     def B_J(sigma, T, B, J, TC, lamb):
         h = B/(lamb*Nm*gJ*mu_B*J)
         y = 3.*J/(J+1.)*(h + sigma)*TC/T
-        return sigma - (2.*J + 1.)/(2.*J*np.tanh((2.*J+1.)*y/(2.*J))) + 1./(2.*J*np.tanh(y/(2*J)))
+        return sigma - (2.*J+1.)/(2.*J*np.tanh((2.*J+1.)*y/(2.*J))) + 1./(2.*J*np.tanh(y/(2*J)))
 
-    sigma = np.zeros_like(T) # variable that stores the values
+    sigma = np.zeros_like(T)  # variable that stores the values
 
-    if np.isscalar(T) and np.isscalar(B): # if T and B are scalars
-        is_negative = False # For negative fields
+    if np.isscalar(T) and np.isscalar(B):  # if T and B are scalars
+        is_negative = False  # For negative fields
         if B < 0:
             is_negative = True
-            B = -1*B # Change sign, do calculations por positive magnetic field
+            # Change sign, do calculations por positive magnetic field
+            B = -1*B
 
         sigma = fsolve(B_J, 0.5, args=(T, B, J, TC, lamb))
         if is_negative:
-            sigma = -1.*sigma # Change back the sign
+            sigma = -1.*sigma  # Change back the sign
 
-    elif len(sigma.shape) == 2: # if T and B are a 2D array
+    elif len(sigma.shape) == 2:  # if T and B are a 2D array
         B_range, T_range = sigma.shape
-        for i in range(B_range): # calculate reduced magnetization for each temperature and magnetic field
-            b = B[i,0]
+        # calculate reduced magnetization for each T and B
+        for i in range(B_range):
+            b = B[i, 0]
 
-            is_negative = False # For negative fields
+            is_negative = False  # For negative fields
             if b < 0:
                 is_negative = True
-                b = -1*b # Change sign, do calculations por positive magnetic field
+                # Change sign, do calculations por positive magnetic field
+                b = -1*b
 
             for j in range(T_range):
-                sig_sol = fsolve(B_J, 0.5, args=(T[0,j], b, J, TC, lamb)) # magnetization
+                # magnetization
+                sig_sol = fsolve(B_J, 0.5, args=(T[0, j], b, J, TC, lamb))
 
                 if is_negative:
-                    sigma[i,j] = -1.*sig_sol # if B < 0, change signal back to negative
+                    # if B < 0, change signal back to negative
+                    sigma[i, j] = -1.*sig_sol
                 else:
-                    sigma[i,j] = sig_sol # if B >= 0
+                    sigma[i, j] = sig_sol  # if B >= 0
     else:
         raise Exception('The variables T and B should be both scalars or both 2D arrays.')
     return sigma
