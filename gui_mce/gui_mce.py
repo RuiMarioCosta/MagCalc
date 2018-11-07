@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 path = os.path.dirname(os.path.abspath(__file__))
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")

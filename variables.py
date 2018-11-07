@@ -17,7 +17,7 @@ k_B = 8.6173324*(10**(-5))  # eV K^-1
 
 
 # Bohr magneton
-mu_B = 5.7883818066*(10**(-5)) # eV T^-1
+mu_B = 5.7883818066*(10**(-5))  # eV T^-1
 
 
 #==============================================================================
@@ -28,9 +28,9 @@ mu_B = 5.7883818066*(10**(-5)) # eV T^-1
 # Tb5Si2Ge2 -> 2
 # Er5Si4 -> 3
 
-Material = 1
+Material = 2
 
-if Material == 1:    ## Gd5Si2Ge2
+if Material == 1:    # Gd5Si2Ge2
 
     # Total Angular Momentum, J
     J1 = 7/2.
@@ -39,27 +39,23 @@ if Material == 1:    ## Gd5Si2Ge2
     # g-factor
     gJ = 2.
 
-
     # Curie Temperature, in Kelvin
     TC1 = 251.   # M
     TC2 = 308.   # O(I)
 
-
     # Debye temperatures, in Kelvin
-    theta_D1 = 250. # M
-    theta_D2 = 278. # O(I)
-
+    theta_D1 = 250.  # M
+    theta_D2 = 278.  # O(I)
 
     # Free Energies at 0 K, in eV
     F01 = 0.36   # M
     F02 = 0.    # O(I)
 
     # Conversion from eV/K to J/Kg K to plot entropy changes.
-    Conv = 24419.523 # Conversion from eV/K to J/Kg K.
+    Conv = 24419.523  # Conversion from eV/K to J/Kg K.
 
 
-
-if Material == 2:    ## Tb5Si2Ge2
+if Material == 2:    # Tb5Si2Ge2
 
     # Total Angular Momentum, J
     J1 = 6.
@@ -68,23 +64,20 @@ if Material == 2:    ## Tb5Si2Ge2
     # g-factor
     gJ = 3/2.
 
-
     # Curie Temperature, in Kelvin
-    TC1 = 112. # M
-    TC2 = 200. # O(I)
-
+    TC1 = 112.  # M
+    TC2 = 200.  # O(I)
 
     # Debye temperatures, in Kelvin
-    theta_D1 = 153. # M
-    theta_D2 = 170. # O(I)
-
+    theta_D1 = 153.  # M
+    theta_D2 = 170.  # O(I)
 
     # Internal Energies of Lattice, in eV
-    F01 = 0.43 # 0.11 # M         0.43
-    F02 = 0. # O(I)
+    F01 = 0.43  # 0.11 # M         0.43
+    F02 = 0.    # O(I)
 
 
-if Material == 3:    ## Er5Si4
+if Material == 3:    # Er5Si4
 
     # Total Angular Momentum, J
     J1 = 15/2.
@@ -93,23 +86,20 @@ if Material == 3:    ## Er5Si4
     # g-factor
     gJ = 6/5.
 
-
     # Curie Temperature, in Kelvin
-    TC1 =  30. # M
-    TC2 =  38.5  # O(I)
-
+    TC1 = 30.   # M
+    TC2 = 38.5  # O(I)
 
     # Debye temperatures, in Kelvin
-    theta_D1 = 200.   #405.91   # M
-    theta_D2 = 175.   #385.     # O(I)
-
+    theta_D1 = 200.   # 405.91   # M
+    theta_D2 = 175.   # 385.     # O(I)
 
     # Internal Energies of Lattice, in eV
-    F01 = 0. # M
+    F01 = 0.  # M
     F02 = 0.143911006   # O(I)  0.143911006    0.114426506
 
 
-if Material == 4:    ## Gd5Ge4
+if Material == 4:    # Gd5Ge4
 
     # Total Angular Momentum, J
     J1 = 7/2.
@@ -118,16 +108,13 @@ if Material == 4:    ## Gd5Ge4
     # g-factor
     gJ = 2.
 
-
     # Curie Temperature, in Kelvin
     TC1 = 35.   # O(II)
     TC2 = 245.  # O(I)
 
-
     # Debye temperatures, in Kelvin
     theta_D1 = 250.  # O(II)
     theta_D2 = 278.  # O(I)
-
 
     # Free Energies at 0 K, in eV
     F01 = 0.   # O(II)
@@ -145,8 +132,8 @@ N = 36.
 
 
 # Initial, Final and Step Temperatures, in Kelvin
-Ti = 250.
-Tf = 350.
+Ti = 5.
+Tf = 250.
 delta_T = 1.
 Tf = Tf + delta_T
 
@@ -157,7 +144,7 @@ delta_B = 1.
 Bf = Bf + delta_B
 
 # Reduced Magnetization
-dsigma = 1e-3 # recomended 1e-5 ?
+dsigma = 1e-3  # recomended 1e-5 ?
 sig = np.arange(-1., 1.+dsigma, dsigma)
 
 
@@ -171,7 +158,7 @@ Delta_T = np.arange(Ti, Tf, delta_T)
 
 # Temperature interval, in Kelvin
 Delta_B = np.arange(Bi, Bf, delta_B)
-#Delta_B = np.array([0., 2., 5.])
+# Delta_B = np.array([0., 2., 5.])
 
 # Domain, Grid with Temperature and Magnetic Field Values
 TT, BB = np.meshgrid(Delta_T, Delta_B)
@@ -185,7 +172,3 @@ C2 = (mu_B**2.)*Nm*(gJ**2.)*J2*(J2 + 1.)/(3.*k_B)
 # Parameter of the strength of the Molecular Field, lambda
 lamb1 = TC1/C1
 lamb2 = TC2/C2
-
-
-
-
