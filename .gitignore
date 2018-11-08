@@ -1,6 +1,8 @@
 *pyc
+*/
 DataBase_MCE
 profiling.py
 hysteresis.py
 other_functions.py
 setup.py
+!gui_mce/

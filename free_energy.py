@@ -6,7 +6,6 @@ Created on Mon Apr 04 17:42:01 2016
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.signal import argrelmax, argrelmin
 from scipy.integrate import quad
 from scipy.optimize import fmin
@@ -90,7 +89,7 @@ def F_L(T, theta_D):
 
 def F2(T, B, J, gJ, TC, lamb, Nm, theta_D, N, F0):
     """Total free energy as a functions of temperature and magnetic field
-    in the unit cell.
+    in the unit cell. (Less efficient than function F)
 
     Parameters
     ---------
@@ -447,7 +446,7 @@ if __name__ == "__main__":
     # print F_L(TT, theta_D1) # should raise and exception
 
     print F(5., 1., J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
-    print F(TT, BB, J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
+    # print F(TT, BB, J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
 
     # print transition_temp(TT, BB, J1, TC1, theta_D1, F01, lamb1, J2, TC2, theta_D2, F02, lamb2, gJ, Nm, N)
 

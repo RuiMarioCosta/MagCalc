@@ -624,13 +624,13 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
-#        self.actionDebug = QtWidgets.QAction(MainWindow)
-#        self.actionDebug.setObjectName("actionDebug")
+        self.actionDebug = QtWidgets.QAction(MainWindow)  # for debugging
+        self.actionDebug.setObjectName("actionDebug")  # for debugging
         self.menuFile.addAction(self.actionExit)
         self.menuHelp.addAction(self.actionSuggestion)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionAbout)
-#        self.menuHelp.addAction(self.actionDebug)
+        self.menuHelp.addAction(self.actionDebug)  # for debugging
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
@@ -711,8 +711,8 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionSuggestion.setText(_translate("MainWindow", "Suggestion"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
-#        self.action.setText(_translate("MainWindow", "Debug"))
-#        self.actionDebug.setText(_translate("MainWindow", "Debug"))
+        self.action.setText(_translate("MainWindow", "Debug"))  # for debuging
+        self.actionDebug.setText(_translate("MainWindow", "Debug"))  # for debugging
 
 
 if __name__ == "__main__":

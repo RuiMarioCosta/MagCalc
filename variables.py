@@ -73,7 +73,7 @@ if Material == 2:    # Tb5Si2Ge2
     theta_D2 = 170.  # O(I)
 
     # Internal Energies of Lattice, in eV
-    F01 = 0.43  # 0.11 # M         0.43
+    F01 = 0.11  # M
     F02 = 0.    # O(I)
 
 

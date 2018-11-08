@@ -51,7 +51,7 @@ def plt_M_vs_T(T, B, sigma_1, sigma_2, sigma_stable, Bstep=1, save=False):
             if not os.path.exists("M_vs_T"):
                 os.makedirs("M_vs_T")
             zipped = zip(T, sigma_1, sigma_2, sigma_stable)
-            np.savetxt("M_vs_T\M_vs_T(" + str(B) + "T).txt",
+            np.savetxt("M_vs_T\\M_vs_T(" + str(B) + "T).txt",
                        zipped,
                        delimiter=',',
                        header='Temperature, Magnetization 1, Magnetization 2, \
@@ -72,17 +72,17 @@ def plt_M_vs_T(T, B, sigma_1, sigma_2, sigma_stable, Bstep=1, save=False):
                 if not os.path.exists("M_vs_T"):
                     os.makedirs("M_vs_T")
                 zipped = zip(T, sigma_1[i], sigma_2[i], sigma_stable[i])
-                np.savetxt("M_vs_T\M_vs_T(" + str(B[i]) + "T).txt",
+                np.savetxt("M_vs_T\\M_vs_T(" + str(B[i]) + "T).txt",
                            zipped,
                            delimiter=',',
                            header='Temperature, Magnetization 1, \
                            Magnetization 2, Stable Magnetization',
                            )
 
-    plt.title('Reduced Magnetizations, $\sigma$')
+    plt.title('Reduced Magnetizations, $\\sigma$')
     plt.legend(loc=0, fontsize='small')
     plt.ylim(-1.05, 1.05)
-    plt.ylabel('$\sigma(T, B)$')
+    plt.ylabel('$\\sigma(T, B)$')
     plt.xlabel('T (K)')
 
 
@@ -116,7 +116,7 @@ def plt_M_vs_B(T, B, sigma_1, sigma_2, sigma_stable, Tstep=1, save=False):
             if not os.path.exists("M_vs_B"):
                 os.makedirs("M_vs_B")
             zipped = zip(B, sigma_1, sigma_2, sigma_stable)
-            np.savetxt("M_vs_B\M_vs_B(" + str(T) + "K).txt",
+            np.savetxt("M_vs_B\\M_vs_B(" + str(T) + "K).txt",
                        zipped,
                        delimiter=',',
                        header='Magnetic Field, Magnetization 1, \
@@ -139,17 +139,17 @@ def plt_M_vs_B(T, B, sigma_1, sigma_2, sigma_stable, Tstep=1, save=False):
                     os.makedirs("M_vs_B")
                 zipped = zip(B, sigma_1[:, i], sigma_2[
                              :, i], sigma_stable[:, i])
-                np.savetxt("M_vs_B\M_vs_B(" + str(T[i]) + "K).txt",
+                np.savetxt("M_vs_B\\M_vs_B(" + str(T[i]) + "K).txt",
                            zipped,
                            delimiter=',',
                            header='Magnetic Field, Magnetization 1, \
                            Magnetization 2, Stable Magnetization',
                            )
 
-    plt.title('Reduced Magnetizations, $\sigma$')
+    plt.title('Reduced Magnetizations, $\\sigma$')
     plt.legend(loc=0, fontsize='small')
     plt.ylim(0, 1.05)
-    plt.ylabel('$\sigma(T, B)$')
+    plt.ylabel('$\\sigma(T, B)$')
     plt.xlabel('B (T)')
 
 
@@ -170,7 +170,7 @@ def plt_M_vs_TB(T, B, sigma_stable,):
 
     plt.figure()
     plt.imshow(sigma_stable, aspect='auto', extent=(T[0], T[-1], B[-1], B[0]))
-    plt.title('Stable Reduced Magnetizations, $\sigma$')
+    plt.title('Stable Reduced Magnetizations, $\\sigma$')
     plt.colorbar()
     plt.ylabel('B (T)')
     plt.xlabel('T (K)')
@@ -208,7 +208,7 @@ def plt_U_vs_T(T, B, sigma_1, sigma_2, Bstep=1, save=False,
             if not os.path.exists("U_vs_T"):
                 os.makedirs("U_vs_T")
             zipped = zip(T, u_M1[i], u_M2[i])
-            np.savetxt("U_vs_T\U_vs_T(" + str(B[i]) + "T).txt",
+            np.savetxt("U_vs_T\\U_vs_T(" + str(B[i]) + "T).txt",
                        zipped, delimiter=',',
                        header='Temperature, Internal Energy 1, \
                        Internal Energy 2',
@@ -245,16 +245,16 @@ def plt_M_hys_vs_T(T, B, sigma_heat, sigma_cool, Bstep=1, save=False):
             if not os.path.exists("M_hys_vs_T"):
                 os.makedirs("M_hys_vs_T")
             zipped = zip(T, sigma_heat[i], sigma_cool[i])
-            np.savetxt("M_hys_vs_T\M_hys_vs_T(" + str(B[i]) + "T).txt",
+            np.savetxt("M_hys_vs_T\\M_hys_vs_T(" + str(B[i]) + "T).txt",
                        zipped, delimiter=',',
                        header='Temperature, Magnetization Heating, \
                        Magnetization Cooling',
                        )
 
-    plt.title('Reduced Magnetizations, $\sigma$')
+    plt.title('Reduced Magnetizations, $\\sigma$')
     plt.legend(loc=0, fontsize='small')
     plt.ylim(0, 1.05)
-    plt.ylabel('$\sigma(T, B)$')
+    plt.ylabel('$\\sigma(T, B)$')
     plt.xlabel('T (K)')
 
 
@@ -285,7 +285,7 @@ def plt_M_hys_vs_B(T, B, sigma_heat, sigma_cool, Tstep=1, save=False):
             if not os.path.exists("M_hys_vs_B"):
                 os.makedirs("M_hys_vs_B")
             zipped = zip(B, sigma_heat[j], sigma_cool[j])
-            np.savetxt("M_hys_vs_B\M_hys_vs_B(" + str(T[j]) + "T).txt",
+            np.savetxt("M_hys_vs_B\\M_hys_vs_B(" + str(T[j]) + "T).txt",
                        zipped, delimiter=',',
                        header='Magnetic Field, Magnetization Heating, \
                        Magnetization Cooling',
@@ -294,7 +294,7 @@ def plt_M_hys_vs_B(T, B, sigma_heat, sigma_cool, Tstep=1, save=False):
     plt.legend(loc=0, fontsize='small')
     plt.title('Magnetization on Heating and Cooling')
     plt.xlabel('$B (T)$')
-    plt.ylabel('$\sigma(T, B)$')
+    plt.ylabel('$\\sigma(T, B)$')
 
 
 def plt_M_hys_vs_TB(T, B, sigma_heat, sigma_cool):
@@ -314,14 +314,14 @@ def plt_M_hys_vs_TB(T, B, sigma_heat, sigma_cool):
 
     plt.figure()
     plt.imshow(sigma_heat, aspect='auto', extent=(T[0], T[-1], B[-1], B[0]))
-    plt.title('Reduced Magnetization Heating, $\sigma$')
+    plt.title('Reduced Magnetization Heating, $\\sigma$')
     plt.colorbar()
     plt.ylabel('B (T)')
     plt.xlabel('T (K)')
 
     plt.figure()
     plt.imshow(sigma_cool, aspect='auto', extent=(T[0], T[-1], B[-1], B[0]))
-    plt.title('Reduced Magnetization Cooling, $\sigma$')
+    plt.title('Reduced Magnetization Cooling, $\\sigma$')
     plt.colorbar()
     plt.ylabel('B (T)')
     plt.xlabel('T (K)')
@@ -440,15 +440,15 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
     for i in range(1, len(B), Bstep):
         plt.plot(T,
                  Conv * (s_tot[i] - s_tot[0]),
-                 label='$\Delta S^{Tot}($' + str(B[0]) + '$\longrightarrow$' +
-                 str(B[i]) + ' T$)$')
+                 label='$\\Delta S^{Tot}($' + str(B[0]) +
+                 '$\\longrightarrow$' + str(B[i]) + ' T$)$')
 
     plt.gca().set_color_cycle(None)
     for i in range(1, len(B), Bstep):
         plt.plot(T,
                  Conv * (s_M_tot[i] - s_M_tot[0]),
                  '--',
-                 label='$\Delta S^{M}($' + str(B[0]) + '$\longrightarrow$' +
+                 label='$\\Delta S^{M}($' + str(B[0]) + '$\\longrightarrow$' +
                  str(B[i]) + ' T$)$')
 
     plt.gca().set_color_cycle(None)
@@ -456,7 +456,7 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
         plt.plot(T,
                  Conv * (s_L_tot[i] - s_L_tot[0]),
                  ':',
-                 label='$\Delta S^{L}($' + str(B[0]) + '$\longrightarrow$' +
+                 label='$\\Delta S^{L}($' + str(B[0]) + '$\\longrightarrow$' +
                  str(B[i]) + ' T$)$')
 
         if save:
@@ -466,20 +466,20 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
                          Conv * (s_tot[i] - s_tot[0]),
                          Conv * (s_M_tot[i] - s_M_tot[0]),
                          Conv * (s_L_tot[i] - s_L_tot[0]))
-            np.savetxt("DeltaS_vs_T\DeltaS_vs_T(" + str(B[i]) + "T).txt",
+            np.savetxt("DeltaS_vs_T\\DeltaS_vs_T(" + str(B[i]) + "T).txt",
                        zipped,
                        delimiter=',',
                        header='Temperature, Total Entropy Change, \
                        Magnetic Entropy Change, Lattice Entropy Change',
                        )
 
-    plt.title('Entropy Change, $\Delta S$')
+    plt.title('Entropy Change, $\\Delta S$')
     plt.legend(loc=0, fontsize='small')
     plt.xlabel('T (K)')
     if conv is False:
-        plt.ylabel('$\Delta S(B)$ (eV/K)')
+        plt.ylabel('$\\Delta S(B)$ (eV/K)')
     else:
-        plt.ylabel('$\Delta S(B)$ (J/Kg K)')
+        plt.ylabel('$\\Delta S(B)$ (J/Kg K)')
 
 
 def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=False):
@@ -510,15 +510,15 @@ def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=False):
 
     plt.plot(B, Conv * s_B)  # plot after 0 T
 
-    plt.title('Maximum Entropy Change, $\Delta S$')
+    plt.title('Maximum Entropy Change, $\\Delta S$')
     plt.xlabel('B (T)')
-    plt.ylabel('$\Delta S^{Max}(B)$ (eV/K)')  # J/Kg K
+    plt.ylabel('$\\Delta S^{Max}(B)$ (eV/K)')  # J/Kg K
 
     if save:
         if not os.path.exists("max_DeltaS_vs_B"):
             os.makedirs("max_DeltaS_vs_B")
         zipped = zip(B, Conv * s_B)
-        np.savetxt("max_DeltaS_vs_B\max_DeltaS_vs_B.txt",
+        np.savetxt("max_DeltaS_vs_B\\max_DeltaS_vs_B.txt",
                    zipped,
                    delimiter=',',
                    header='magnetic Field, Maximum Total Entropy Change',
@@ -543,7 +543,7 @@ def plt_S_M_vs_M(sigma, T, B, J1, J2, gJ, TC1, TC2, lamb1, lamb2, Nm,
                 if not os.path.exists("S_M_vs_M"):
                     os.makedirs("S_M_vs_M")
                 zipped = zip(sigma, f1, f2)
-                np.savetxt("S_M_vs_M\S_M_vs_M(" + str(T[i]) + "K," +
+                np.savetxt("S_M_vs_M\\S_M_vs_M(" + str(T[i]) + "K," +
                            str(B[j]) + "T).txt",
                            zipped,
                            delimiter=',',
@@ -552,7 +552,7 @@ def plt_S_M_vs_M(sigma, T, B, J1, J2, gJ, TC1, TC2, lamb1, lamb2, Nm,
                            )
 
         plt.title('Magnetic Entropy, $S^M$(B=' + str(B[j]) + ')')
-        plt.xlabel('$\sigma$')
+        plt.xlabel('$\\sigma$')
         plt.ylabel('$S^M$ (eV/K)')  # J/Kg K
         plt.legend(loc=0, fontsize='small')
 
@@ -588,7 +588,7 @@ def plt_F_vs_T(T, B, free_ener_1, free_ener_2, free_stable, Bstep=1,
             if not os.path.exists("F_vs_T"):
                 os.makedirs("F_vs_T")
             zipped = zip(T,  free_ener_1[i], free_ener_2[i], free_stable[i])
-            np.savetxt("F_vs_T\F_vs_T(" + str(B[i]) + "T).txt",
+            np.savetxt("F_vs_T\\F_vs_T(" + str(B[i]) + "T).txt",
                        zipped,
                        delimiter=',',
                        header='Temperature, Free Energy 1, Free Energy 2, \
@@ -596,7 +596,7 @@ def plt_F_vs_T(T, B, free_ener_1, free_ener_2, free_stable, Bstep=1,
                        )
 
     plt.legend(loc=0)
-    plt.title('Free Energies, $\Delta F(T)$')
+    plt.title('Free Energies, $\\Delta F(T)$')
     plt.xlabel('T (K)')
     plt.ylabel('F(T) (eV)')
 
@@ -665,7 +665,7 @@ def plt_transition_temp(T, B, save, J1, TC1, theta_D1, F01, lamb1,
             if not os.path.exists("Ts_vs_B"):
                 os.makedirs("Ts_vs_B")
             zipped = zip(B[:, 0], Ts)
-            np.savetxt("Ts_vs_B\Ts_vs_B.txt", zipped, delimiter=',',
+            np.savetxt("Ts_vs_B\\Ts_vs_B.txt", zipped, delimiter=',',
                        header='Magnetic Field, Transition Temperatures',)
 
 
@@ -709,7 +709,7 @@ def plt_F_M_vs_M(sigma, T, B, J1, TC1, lamb1, J2, TC2, lamb2, gJ, Nm,
         plt.legend(loc=0, fontsize='small')
         plt.title('Magnetic Free Energy as a function of Magnetization \
                   $F^M$, B=' + str(Delta_B[j]) + 'T')
-        plt.xlabel('$\sigma$')
+        plt.xlabel('$\\sigma$')
         plt.ylabel('F(T) (eV)')
         plt.xlim(-1, 1)
 
@@ -750,14 +750,14 @@ def plt_F_M_vs_T(T, B, J1, J2, TC1, TC2, lamb1, lamb2, gJ, Nm, Bstep=1,
             if not os.path.exists("F_M_vs_T"):
                 os.makedirs("F_M_vs_T")
             zipped = zip(Delta_T,  free_ener_1[i], free_ener_2[i])
-            np.savetxt("F_M_vs_T\F_M_vs_T(" + str(Delta_B[i]) + "T).txt",
+            np.savetxt("F_M_vs_T\\F_M_vs_T(" + str(Delta_B[i]) + "T).txt",
                        zipped,
                        delimiter=',',
                        header='Temperature, Free Energy 1, Free Energy 2',
                        )
 
     plt.legend(loc=0)
-    plt.title('Magentic Free Energies, $\Delta F(T)$')
+    plt.title('Magentic Free Energies, $\\Delta F(T)$')
     plt.xlabel('T (K)')
     plt.ylabel('F(T) (eV)')
 
@@ -826,15 +826,16 @@ def plt_Ftot_vs_M(sigma, T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1,
             f3 = free.F_totstable_vs_M(sigma, T[i], B[j], J1, TC1, lamb1,
                                        theta_D1, F01, J2, TC2, lamb2, theta_D2,
                                        F02, gJ, Nm, N)
-            plt.plot(sigma, f3, label='3, T=' + str(T[i]) + 'K')
+            plt.plot(sigma, f3, label='stable, T=' + str(T[i]) + 'K')
 
             if save:
                 if not os.path.exists("Ftot_vs_M"):
                     os.makedirs("Ftot_vs_M")
                 zipped = zip(sigma, f1, f2, f3)
-                np.savetxt("Ftot_vs_M\Ftot_vs_M(" + str(T[i]) + "K," +
+                np.savetxt("Ftot_vs_M\\Ftot_vs_M(" + str(T[i]) + "K," +
                            str(B[j]) + "T).txt",
-                           zipped, delimiter=',',
+                           zipped,
+                           delimiter=',',
                            header='Reduced Magnetization, Free Energy 1, \
                            Free Energy 2, Stable Free Energy',
                            )
@@ -842,7 +843,7 @@ def plt_Ftot_vs_M(sigma, T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1,
         plt.legend(loc=0, fontsize='small')
         plt.title('Total Free Energy as a function of Magnetization \
                   $F^{Tot}=F^M+F^L+F^E$, B=' + str(B[j]) + 'T')
-        plt.xlabel('$\sigma$')
+        plt.xlabel('$\\sigma$')
         plt.ylabel('F(T) (eV)')
         plt.xlim(-1, 1)
 
@@ -1020,7 +1021,7 @@ def plt_E_M_vs_M(sigma, T, B, Tstep=1, Bstep=1, save=False):
         plt.legend(loc=0, fontsize='small')
         plt.xlim(-1, 1)
         plt.title('Magnetic Energy $E^M$, B=' + str(B[j]) + 'T')
-        plt.xlabel('$\sigma$')
+        plt.xlabel('$\\sigma$')
         plt.ylabel('E (eV)')
 
 
@@ -1045,6 +1046,7 @@ def plt_M(MvsT=0, MvsB=0, MvsTB=0, UvsT=0, M_hys_vs_T=0, save=0, TT=None,
         field and both.
     """
     print 'Magnetization'
+
     if MvsT or MvsB or MvsTB or UvsT:
         # magnetization of phase 1
         sig_1 = mag.Brillouin(TT, BB, J1, gJ, TC1, lamb1, Nm)
@@ -1201,7 +1203,7 @@ def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
                                 free_ener_1, free_ener_2)
 
     # if the free energies are not already calculated
-    if trans_temp and (FvsT != True and FvsB != True):
+    if trans_temp and (FvsT is not True and FvsB is not True):
         plt_transition_temp(TT, BB, save, J1, TC1, theta_D1, F01, lamb1, J2,
                             TC2, theta_D2, F02, lamb2, gJ, Nm, N)
 
@@ -1284,14 +1286,26 @@ if __name__ == "__main__":
 
     print 'Plotting...\n'
 
-    plt_M(MvsT=1, MvsB=0, MvsTB=0, UvsT=0, M_hys_vs_T=0, save=0, TT=TT, BB=BB,
+    plt_M(MvsT=0, MvsB=0, MvsTB=0, UvsT=0, M_hys_vs_T=0, save=0, TT=TT, BB=BB,
           J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
           Delta_T=Delta_T, Delta_B=Delta_B, theta_D1=theta_D1,
           theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N)
+
     plt_S(S_M_vs_T=0, S_L_VS_T=0, S_tot_vs_T=0, DeltaS_vs_T=0,
-          max_DeltaS_vs_B=0, S_M_vs_M=0, save=0)
+          max_DeltaS_vs_B=0, S_M_vs_M=0, save=0, TT=TT, BB=BB,
+          J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
+          Delta_T=Delta_T, Delta_B=Delta_B, theta_D1=theta_D1,
+          theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N)
+
     plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0,
-          F_L_vs_T=0, FtotvsM=0, Ftot_heatcool=0, save=0)
-    plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0)
+          F_L_vs_T=0, FtotvsM=0, Ftot_heatcool=0, save=0, TT=TT, BB=BB,
+          J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
+          Delta_T=Delta_T, Delta_B=Delta_B, theta_D1=theta_D1,
+          theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N)
+
+    plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0, TT=TT, BB=BB,
+          J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
+          Delta_T=Delta_T, Delta_B=Delta_B, theta_D1=theta_D1,
+          theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N)
 
     plt.show()

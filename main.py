@@ -28,11 +28,12 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
         super(GUI, self).__init__(parent)
         self.setupUi(self)
 
-        # add action to exit button
+        # add actions to menu buttons
         self.actionExit.triggered.connect(QtWidgets.qApp.quit)
         self.actionAbout.triggered.connect(self.about_msg)
         self.actionSuggestion.triggered.connect(self.suggestion_msg)
 
+        # actions for database
         self.database()  # create/load database
         self.pushButton_Save.clicked.connect(self.save_update_to_db)
         self.pushButton_Delete.clicked.connect(self.delete_entry_in_db)
@@ -42,7 +43,10 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
 
         self.pushButton_Run.clicked.connect(self.run_plots)
 
-        # Used mainly for testing
+        # for debugging
+        self.actionDebug.triggered.connect(self.print_vars)
+
+        # Used mainly for testing, it's boring to always type the values
         self.lineEdit_Ti.setText('5')
         self.lineEdit_Tf.setText('250')
         self.lineEdit_DeltaT.setText('1')
@@ -73,6 +77,47 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
 
         self.comboBox_Database.clear()
         self.comboBox_Database.addItems(self.db_dict.keys())
+
+    def print_vars(self):  # for debugging
+        print "===================================================="
+        print "J =", self.lineEdit_J.text(), type(self.lineEdit_J.text())
+        print "gJ =", self.lineEdit_gJ.text()
+        print "TC1 =", self.lineEdit_TC1.text()
+        print "TC2 =", self.lineEdit_TC2.text()
+        print "ThetaD1 =", self.lineEdit_ThetaD1.text()
+        print "ThetaD2 =", self.lineEdit_ThetaD2.text()
+        print "DeltaF =", self.lineEdit_DeltaF.text()
+        print "N =", self.lineEdit_N.text()
+        print "Nm =", self.lineEdit_Nm.text()
+        print "----------------------------------------------------"
+        print "Ti =", self.lineEdit_Ti.text()
+        print "Tf =", self.lineEdit_Tf.text()
+        print "DeltaT =", self.lineEdit_DeltaT.text()
+        print "Bi =", self.lineEdit_Bi.text()
+        print "Bf =", self.lineEdit_Bf.text()
+        print "DeltaB =", self.lineEdit_DeltaB.text()
+        print "Deltasigma =", self.lineEdit_Deltasigma.text()
+        print "----------------------------------------------------"
+        print "MvsT =", self.checkBox_M_vs_T.checkState()
+        print "MvsB =", self.checkBox_M_vs_B.checkState()
+        print "MvsTB =", self.checkBox_M_vs_TB.checkState()
+        print "UvsT =", self.checkBox_U_vs_T.checkState()
+        print "M_hys_vs_T =", self.checkBox_Mhys_vs_TB.checkState()
+        print "FvsT =", self.checkBox_F_vs_T.checkState()
+        print "FvsB =", self.checkBox_F_vs_B.checkState()
+        print "trans_temp =", self.checkBox_Ts_vs_B.checkState()
+        print "F_M_vs_T =", self.checkBox_FM_vs_T.checkState()
+        print "F_M_vs_M =", self.checkBox_FM_vs_M.checkState()
+        print "F_L_vs_T =", self.checkBox_FL_vs_T.checkState()
+        print "FtotvsM =", self.checkBox_Ftot_vs_M.checkState()
+        print "Ftot_heatcool =", self.checkBox_Ftotheatcool_vs_TB.checkState()
+        print "S_M_vs_T =", self.checkBox_SM_vs_T.checkState()
+        print "S_L_VS_T =", self.checkBox_SL_vs_T.checkState()
+        print "S_tot_vs_T =", self.checkBox_Stot_vs_T.checkState()
+        print "DeltaS_vs_T =", self.checkBox_DeltaS_vs_T.checkState()
+        print "max_DeltaS_vs_B =", self.checkBox_maxDeltaS_vs_B.checkState()
+        print "S_M_vs_M =", self.checkBox_SM_vs_M.checkState()
+        print "save =", self.checkBox_Savetxt.checkState()
 
     def check_parameters(self):
         if (self.is_number(self.lineEdit_J.text()) and
@@ -140,25 +185,15 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
         self.lineEdit_Nm.setText(str(self.db_dict[name]['Nm']))
 
     def run_plots(self):
-        print '1----------------------'
-        print self.checkBox_M_vs_T.checkState(), type(self.checkBox_M_vs_T.checkState())
-        print '2----------------------'
-        print self.lineEdit_J.text(), type(self.lineEdit_J.text()), type(float(self.lineEdit_J.text()))
-        print '3----------------------'
-        # print self.is_number(self.lineEdit_Ti.text())
-        print '4----------------------'
-        print self.checkBox_M_vs_T.checkState()==2,self.checkBox_M_vs_T.checkState()-1==True
-        print '5----------------------'
-        print self.db_dict
-        print '-------------------------------------------------------\n\n'
+        # print self.db_dict
 
         if self.update_variables():
-            plots.plt_M(MvsT=self.checkBox_M_vs_T.checkState()-1,
-                        MvsB=self.checkBox_M_vs_B.checkState()-1,
-                        MvsTB=self.checkBox_M_vs_TB.checkState()-1,
-                        UvsT=self.checkBox_U_vs_T.checkState()-1,
-                        M_hys_vs_T=self.checkBox_Mhys_vs_TB.checkState()-1,
-                        save=self.checkBox_Savetxt.checkState()-1,
+            plots.plt_M(MvsT=self.checkBox_M_vs_T.checkState(),
+                        MvsB=self.checkBox_M_vs_B.checkState(),
+                        MvsTB=self.checkBox_M_vs_TB.checkState(),
+                        UvsT=self.checkBox_U_vs_T.checkState(),
+                        M_hys_vs_T=self.checkBox_Mhys_vs_TB.checkState(),
+                        save=self.checkBox_Savetxt.checkState(),
                         TT=self.TT,
                         BB=self.BB,
                         J1=float(self.lineEdit_J.text()),
@@ -178,15 +213,15 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
                         N=float(self.lineEdit_N.text())
                         )
 
-            plots.plt_F(FvsT=self.checkBox_F_vs_T.checkState()-1,
-                        FvsB=self.checkBox_F_vs_B.checkState()-1,
-                        trans_temp=self.checkBox_Ts_vs_B.checkState()-1,
-                        F_M_vs_T=self.checkBox_FM_vs_T.checkState()-1,
-                        F_M_vs_M=self.checkBox_FM_vs_M.checkState()-1,
-                        F_L_vs_T=self.checkBox_FL_vs_T.checkState()-1,
-                        FtotvsM=self.checkBox_Ftot_vs_M.checkState()-1,
-                        Ftot_heatcool=self.checkBox_Ftotheatcool_vs_TB.checkState()-1,
-                        save=self.checkBox_Savetxt.checkState()-1,
+            plots.plt_F(FvsT=self.checkBox_F_vs_T.checkState(),
+                        FvsB=self.checkBox_F_vs_B.checkState(),
+                        trans_temp=self.checkBox_Ts_vs_B.checkState(),
+                        F_M_vs_T=self.checkBox_FM_vs_T.checkState(),
+                        F_M_vs_M=self.checkBox_FM_vs_M.checkState(),
+                        F_L_vs_T=self.checkBox_FL_vs_T.checkState(),
+                        FtotvsM=self.checkBox_Ftot_vs_M.checkState(),
+                        Ftot_heatcool=self.checkBox_Ftotheatcool_vs_TB.checkState(),
+                        save=self.checkBox_Savetxt.checkState(),
                         TT=self.TT,
                         BB=self.BB,
                         J1=float(self.lineEdit_J.text()),
@@ -206,13 +241,13 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
                         N=float(self.lineEdit_N.text()),
                         sigma=self.sigma)
 
-            plots.plt_S(S_M_vs_T=self.checkBox_SM_vs_T.checkState()-1,
-                        S_L_VS_T=self.checkBox_SL_vs_T.checkState()-1,
-                        S_tot_vs_T=self.checkBox_Stot_vs_T.checkState()-1,
-                        DeltaS_vs_T=self.checkBox_DeltaS_vs_T.checkState()-1,
-                        max_DeltaS_vs_B=self.checkBox_maxDeltaS_vs_B.checkState()-1,
-                        S_M_vs_M=self.checkBox_SM_vs_M.checkState()-1,
-                        save=self.checkBox_Savetxt.checkState()-1,
+            plots.plt_S(S_M_vs_T=self.checkBox_SM_vs_T.checkState(),
+                        S_L_VS_T=self.checkBox_SL_vs_T.checkState(),
+                        S_tot_vs_T=self.checkBox_Stot_vs_T.checkState(),
+                        DeltaS_vs_T=self.checkBox_DeltaS_vs_T.checkState(),
+                        max_DeltaS_vs_B=self.checkBox_maxDeltaS_vs_B.checkState(),
+                        S_M_vs_M=self.checkBox_SM_vs_M.checkState(),
+                        save=self.checkBox_Savetxt.checkState(),
                         TT=self.TT,
                         BB=self.BB,
                         J1=float(self.lineEdit_J.text()),
@@ -292,12 +327,12 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
         msg.setWindowTitle("About")
         msg.setText(
         '''Magnetocaloric Effect v0.9\nCopyright (c) 2017 Rui M. Costa.
-Licensed under the terms of GNU GPL
+Licensed under the terms of GNU GPL v3.0
 
 Created by Rui Costa, Bernardo Bordalo, João P. Araújo and André Pereira.
 
 Python 2.7.13 64bits, Qt 5.6.2, PyQt5 6.0 on Windows''')
-#This software was developed using PyQt, numpy,.. (acabar)\n
+# This software was developed using PyQt, numpy,.. (acabar)\n
 
         msg.setIconPixmap(QtGui.QPixmap("IFIMUP_icon.png"))
         msg.exec_()
