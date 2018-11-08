@@ -192,8 +192,6 @@ def plt_U_vs_T(T, B, sigma_1, sigma_2, Bstep=1, save=False,
     """
     print '\t Internal Magnetic Energy'
 
-    print type(J1), type(BB), type(TC1)
-
     u_M1 = -gJ * mu_B * J1 * BB * sigma_1 - 3. * \
         J1 / (J1 + 1.) * k_B * TC1 * (sigma_1**2.)
     u_M2 = -gJ * mu_B * J2 * BB * sigma_2 - 3. * \
@@ -414,7 +412,7 @@ def plt_S_tot_vs_T(T, B, s_tot, Bstep=1, save=False):
 
 
 def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
-                    conv=False):
+                    conv=1):
     """Plots the entropy changes of stable phase.
 
     Parameters
@@ -429,24 +427,22 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
         Index step when plotting for several magnetic fields.
     save : bool
         Save the data of this plot to a .txt file.
-    conv = bool
-        Enables the conversion from eV/K to J/Kg K (or the conversion used in \
-        Variables.py).
+    conv = scalar
+        Enables the conversion from eV/K to another unit system (or the
+        conversion used in Variables.py).
     """
-    if conv is False:  # if the conversion is disabled
-        Conv = 1.
 
     plt.figure()
     for i in range(1, len(B), Bstep):
         plt.plot(T,
-                 Conv * (s_tot[i] - s_tot[0]),
+                 conv * (s_tot[i] - s_tot[0]),
                  label='$\\Delta S^{Tot}($' + str(B[0]) +
                  '$\\longrightarrow$' + str(B[i]) + ' T$)$')
 
     plt.gca().set_color_cycle(None)
     for i in range(1, len(B), Bstep):
         plt.plot(T,
-                 Conv * (s_M_tot[i] - s_M_tot[0]),
+                 conv * (s_M_tot[i] - s_M_tot[0]),
                  '--',
                  label='$\\Delta S^{M}($' + str(B[0]) + '$\\longrightarrow$' +
                  str(B[i]) + ' T$)$')
@@ -454,7 +450,7 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
     plt.gca().set_color_cycle(None)
     for i in range(1, len(B), Bstep):
         plt.plot(T,
-                 Conv * (s_L_tot[i] - s_L_tot[0]),
+                 conv * (s_L_tot[i] - s_L_tot[0]),
                  ':',
                  label='$\\Delta S^{L}($' + str(B[0]) + '$\\longrightarrow$' +
                  str(B[i]) + ' T$)$')
@@ -463,9 +459,9 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
             if not os.path.exists("DeltaS_vs_T"):
                 os.makedirs("DeltaS_vs_T")
             zipped = zip(T,
-                         Conv * (s_tot[i] - s_tot[0]),
-                         Conv * (s_M_tot[i] - s_M_tot[0]),
-                         Conv * (s_L_tot[i] - s_L_tot[0]))
+                         conv * (s_tot[i] - s_tot[0]),
+                         conv * (s_M_tot[i] - s_M_tot[0]),
+                         conv * (s_L_tot[i] - s_L_tot[0]))
             np.savetxt("DeltaS_vs_T\\DeltaS_vs_T(" + str(B[i]) + "T).txt",
                        zipped,
                        delimiter=',',
@@ -476,13 +472,13 @@ def plt_DeltaS_vs_T(T, B, s_tot, s_M_tot, s_L_tot, Bstep=1, save=False,
     plt.title('Entropy Change, $\\Delta S$')
     plt.legend(loc=0, fontsize='small')
     plt.xlabel('T (K)')
-    if conv is False:
+    if conv == 1:
         plt.ylabel('$\\Delta S(B)$ (eV/K)')
     else:
         plt.ylabel('$\\Delta S(B)$ (J/Kg K)')
 
 
-def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=False):
+def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=1):
     """Plots the maximum entropy changes as function of magnetic field.
 
     Parameters
@@ -505,10 +501,7 @@ def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=False):
     for i in range(len(B)):
         s_B[i] = np.amax(np.abs(s_tot[i] - s_tot[0]))
 
-    if conv is False:
-        Conv = 1.
-
-    plt.plot(B, Conv * s_B)  # plot after 0 T
+    plt.plot(B, conv * s_B)  # plot after 0 T
 
     plt.title('Maximum Entropy Change, $\\Delta S$')
     plt.xlabel('B (T)')
@@ -517,7 +510,7 @@ def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=False):
     if save:
         if not os.path.exists("max_DeltaS_vs_B"):
             os.makedirs("max_DeltaS_vs_B")
-        zipped = zip(B, Conv * s_B)
+        zipped = zip(B, conv * s_B)
         np.savetxt("max_DeltaS_vs_B\\max_DeltaS_vs_B.txt",
                    zipped,
                    delimiter=',',
@@ -1143,15 +1136,14 @@ def plt_S(S_M_vs_T=0, S_L_VS_T=0, S_tot_vs_T=0, DeltaS_vs_T=0,
                                   theta_D2, F01, F02, lamb1, lamb2, N, Nm)
             print '3'
             plt_DeltaS_vs_T(Delta_T, Delta_B, s_tot, s_M_tot,
-                            s_L_tot, Bstep=1, save=save, conv=0)
+                            s_L_tot, Bstep=1, save=save, conv=1)
             print '4'
         if max_DeltaS_vs_B:
-            print save
-            plt_max_DeltaS_vs_B(Delta_B, s_tot, save=save, conv=0)
+            plt_max_DeltaS_vs_B(Delta_B, s_tot, save=save, conv=1)
 
     if S_M_vs_M:
         plt_S_M_vs_M(sigma, Delta_T, Delta_B, J1, J2, gJ, TC1, TC2,
-                     lamb1, lamb2, Nm, Tstep=10, Bstep=1, save=save)
+                     lamb1, lamb2, Nm, Tstep=1, Bstep=1, save=save)
 
 
 def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
@@ -1195,7 +1187,7 @@ def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
 
         if FvsB:
             plt_F_vs_B(Delta_T, Delta_B, free_ener_1, free_ener_2,
-                       free_stable, Tstep=10, save=save)
+                       free_stable, Tstep=1, save=save)
 
         if trans_temp:
             plt_transition_temp(TT, BB, save, J1, TC1, theta_D1, F01, lamb1,

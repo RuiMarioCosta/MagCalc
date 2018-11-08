@@ -624,13 +624,13 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
-        self.actionDebug = QtWidgets.QAction(MainWindow)  # for debugging
-        self.actionDebug.setObjectName("actionDebug")  # for debugging
+        # self.actionDebug = QtWidgets.QAction(MainWindow)  # for debugging
+        # self.actionDebug.setObjectName("actionDebug")  # for debugging
         self.menuFile.addAction(self.actionExit)
         self.menuHelp.addAction(self.actionSuggestion)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionAbout)
-        self.menuHelp.addAction(self.actionDebug)  # for debugging
+        # self.menuHelp.addAction(self.actionDebug)  # for debugging
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
@@ -656,10 +656,16 @@ class Ui_MainWindow(object):
         self.label_DeltaB.setPixmap(QtGui.QPixmap("gui_mce/fig_DeltaB.png"))
         self.label_Deltasigma.setPixmap(QtGui.QPixmap("gui_mce/fig_Deltasigma.png"))
 
+        # set top left icon and taskbar icon
+        self.setWindowIcon(QtGui.QIcon("gui_mce/MC_icon.PNG"))
+        import ctypes
+        myappid = u'mycompany.myproduct.subproduct.version'  # arbitrary string
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Magnetocaloric Effect"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MagCalc - Magnetocaloric Effect"))
         self.label_Name.setToolTip(_translate("MainWindow", "<html><head/><body><p>Name of compound</p></body></html>"))
         self.label_Name.setText(_translate("MainWindow", "Name"))
         self.label_Database.setText(_translate("MainWindow", "Database"))
@@ -711,8 +717,8 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionSuggestion.setText(_translate("MainWindow", "Suggestion"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
-        self.action.setText(_translate("MainWindow", "Debug"))  # for debuging
-        self.actionDebug.setText(_translate("MainWindow", "Debug"))  # for debugging
+        # self.action.setText(_translate("MainWindow", "Debug"))  # for debuging
+        # self.actionDebug.setText(_translate("MainWindow", "Debug"))  # for debugging
 
 
 if __name__ == "__main__":

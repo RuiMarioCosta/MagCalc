@@ -44,7 +44,7 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
         self.pushButton_Run.clicked.connect(self.run_plots)
 
         # for debugging
-        self.actionDebug.triggered.connect(self.print_vars)
+        # self.actionDebug.triggered.connect(self.print_vars)
 
         # Used mainly for testing, it's boring to always type the values
         self.lineEdit_Ti.setText('5')
@@ -185,6 +185,7 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
         self.lineEdit_Nm.setText(str(self.db_dict[name]['Nm']))
 
     def run_plots(self):
+        print "\n"
         # print self.db_dict
 
         if self.update_variables():
@@ -326,7 +327,7 @@ class GUI(QtWidgets.QMainWindow, gui_mce.gui_mce.Ui_MainWindow):
         msg = QtWidgets.QMessageBox(self)
         msg.setWindowTitle("About")
         msg.setText(
-        '''Magnetocaloric Effect v0.9\nCopyright (c) 2017 Rui M. Costa.
+        '''Magnetocaloric Effect v1.0\nCopyright (c) 2017 Rui M. Costa.
 Licensed under the terms of GNU GPL v3.0
 
 Created by Rui Costa, Bernardo Bordalo, João P. Araújo and André Pereira.
@@ -338,10 +339,14 @@ Python 2.7.13 64bits, Qt 5.6.2, PyQt5 6.0 on Windows''')
         msg.exec_()
 
     def suggestion_msg(self):
-        text = ('For bug reports and feature requests, please send to '
-                'up201100341@fc.up.pt with the subject "MCE Program - '
-                'Suggestion".')
-        QtWidgets.QMessageBox.about(self, 'Suggestion', text)
+        msg = QtWidgets.QMessageBox(self)
+        msg.setWindowTitle("Suggestion")
+        msg.setText('For bug reports and feature requests, please send to '
+                    'up201100341@fc.up.pt with the subject "MCE Program - '
+                    'Suggestion". Alternatively, the code is available at '
+                    'https://github.com/RuiMarioCosta/MagCalc to anyone '
+                    'that wants to make changes.')
+        msg.exec_()
 
 
 def main():
