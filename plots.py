@@ -697,8 +697,8 @@ def plt_F_M_vs_M(sigma, T, B, J1, TC1, lamb1, J2, TC2, lamb2, gJ, Nm,
     for j in range(0, len(Delta_B), Bstep):
         plt.figure()
         for i in range(0, len(Delta_T), Tstep):
-            f1 = free.F_M_vs_M(sigma, Delta_T[i], Delta_B[
-                               j], J1, gJ, TC1, lamb1, Nm)
+            f1 = free.F_M_vs_M(sigma, Delta_T[i], Delta_B[j], J1, gJ, TC1,
+                               lamb1, Nm)
             plt.plot(sigma, f1, ':', label='1, T=' + str(Delta_T[i]) + 'K')
         plt.gca().set_color_cycle(None)
         for i in range(0, len(Delta_T), Tstep):
@@ -1214,14 +1214,14 @@ def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
     if F_M_vs_M:
         # plots the magnetic free energy vs magnetiation
         plt_F_M_vs_M(sigma, TT, BB, J1, TC1, lamb1, J2,
-                     TC2, lamb2, gJ, Nm, Tstep=10, Bstep=1)
+                     TC2, lamb2, gJ, Nm, Tstep=1, Bstep=1)
 
     if F_L_vs_T:
         plt_F_L_vs_T(Delta_T, theta_D1, theta_D2)
 
     if FtotvsM:
         plt_Ftot_vs_M(sigma, Delta_T, Delta_B, J1, J2, TC1, TC2, lamb1, lamb2,
-                      theta_D1, theta_D2, F01, F02, gJ, Nm, N, Tstep=20,
+                      theta_D1, theta_D2, F01, F02, gJ, Nm, N, Tstep=1,
                       Bstep=1, save=save)
 
     if Ftot_heatcool:
@@ -1236,7 +1236,7 @@ def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
                             f_cool, Bstep=1, save=save)
 
         plt_F_heatcool_vs_B(Delta_T, Delta_B, f_heat,
-                            f_cool, Tstep=10, save=save)
+                            f_cool, Tstep=1, save=save)
 
     return None
 
@@ -1301,11 +1301,8 @@ if __name__ == "__main__":
           F_L_vs_T=0, FtotvsM=0, Ftot_heatcool=0, save=0, TT=TT, BB=BB,
           J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
           Delta_T=Delta_T, Delta_B=Delta_B, theta_D1=theta_D1,
-          theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N)
+          theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N, sigma=sig)
 
-    plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0, TT=TT, BB=BB,
-          J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
-          Delta_T=Delta_T, Delta_B=Delta_B, theta_D1=theta_D1,
-          theta_D2=theta_D2, gJ=gJ, F01=F01, F02=F02, Nm=Nm, N=N)
+    plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0)
 
     plt.show()

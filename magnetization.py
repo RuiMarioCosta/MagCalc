@@ -60,7 +60,7 @@ def Brillouin(T, B, J, gJ, TC, lamb, Nm):
         if is_negative:
             sigma = -1.*sigma  # Change back the sign
 
-    elif len(sigma.shape) == 2:  # if T and B are a 2D array
+    elif (len(T.shape) and len(B.shape)) == 2:  # if T and B are a 2D array
         B_range, T_range = sigma.shape
         # calculate reduced magnetization for each T and B
         for i in range(B_range):
@@ -236,7 +236,7 @@ if __name__ == "__main__":
     from variables import * # import variables to use in functions
 
     # print Brillouin(5., Delta_B, J1, gJ, TC1, lamb1, Nm)
-    # print Brillouin(TT, BB, J1, gJ, TC1, lamb1, Nm)
+    print Brillouin(TT, BB, J1, gJ, TC1, lamb1, Nm)
 
     # print Brillouin_stable(TT, BB, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1,
     #                        theta_D2, F01, F02, gJ, Nm, N)

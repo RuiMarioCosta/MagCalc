@@ -6,13 +6,11 @@ Created on Mon Apr 04 17:42:01 2016
 """
 
 import numpy as np
-from scipy.signal import argrelmax, argrelmin
 from scipy.integrate import quad
 from scipy.optimize import fmin
 
 import magnetization as mag
 import entropy as ent
-import energy as ener
 
 mu_B = 5.7883818066*(10**(-5))  # eV T^-1
 k_B = 8.6173324*(10**(-5))  # eV K^-1
@@ -133,9 +131,9 @@ def F(T, B, J, gJ, TC, lamb, Nm, theta_D, N, F0):
 
     Parameters
     ---------
-    T : 2D array
+    T : scalar, 2D array
         Temperatures.
-    B : 2D array
+    B : scalar, 2D array
         Magnetic fields.
     J : scalar
         Total angular momentum.
@@ -153,7 +151,13 @@ def F(T, B, J, gJ, TC, lamb, Nm, theta_D, N, F0):
     """
     f_M = F_M(T, B, J, gJ, TC, lamb, Nm)  # magnetic free energy of 1 spin
 
-    f_L = F_L(T[0], theta_D)*np.ones_like(T)  # lattice free energy of 1 atom
+    if np.isscalar(T):  # if T is just a single Temperature
+        f_L = F_L(T, theta_D)*np.ones_like(T)  # lattice free energy of 1 atom
+    elif (len(T.shape) and len(B.shape)) == 2:  # if T and B are a 2D array
+        # lattice free energy of 1 atom
+        f_L = F_L(T[0], theta_D)*np.ones_like(T)
+    else:
+        raise Exception('The variables T and B should be both scalars or both 2D arrays.')
 
     # relative field to the saturation magnetization
     # h = B/(lamb*Nm*gJ*mu_B*J)
@@ -228,11 +232,11 @@ def F_M_vs_M(sigma, T, B, J, gJ, TC, lamb, Nm):
 
     Parameters
     ----------
-    sigma : scalar, 2D array
+    sigma : scalar, 1D array
         Reduced Magnetization.
-    T : scalar, 2D array
+    T : scalar
         Temperature.
-    B : scalar, 2D array
+    B : scalar
         Applied Magnetic Field.
     J : scalar
         Total Angular Momentum.
@@ -267,25 +271,31 @@ def F_M_vs_M(sigma, T, B, J, gJ, TC, lamb, Nm):
 
 
 # Magnetic Free Energy of Stable Phase as a function of Magnetization
-def F_Mstable_vs_M(sigma, T, B, J1, TC1, lamb1, J2, TC2, lamb2):
+def F_Mstable_vs_M(sigma, T, B, J1, TC1, lamb1, J2, TC2, lamb2, gJ, Nm):
     """Stable magnetic free energy as a functio of reduced magnetization.
 
     Parameters
     ----------
     sigma : scalar, 1D array
         Reduced Magnetization.
-    T : scalar, 1D array
+    T : scalar
         Temperature.
-    B : scalar, 1D array
+    B : scalar
         Applied Magnetic Field.
+    J : scalar
+        Total Angular Momentum.
+    TC : scalar
+        Curie Temperature.
+    lamb : scalar
+        Value of the strength of the parameter of the Molecular Field.
 
     Returns
     --------
     y : scalar, array
         Stable magnetic free energy.
     """
-    F1 = F_M_vs_M(sigma, T, B, J1, TC1, lamb1)
-    F2 = F_M_vs_M(sigma, T, B, J2, TC2, lamb2)
+    F1 = F_M_vs_M(sigma, T, B, J1, gJ, TC1, lamb1, Nm)
+    F2 = F_M_vs_M(sigma, T, B, J2, gJ, TC2, lamb2, Nm)
 
     return np.minimum(F1, F2)
 
@@ -295,9 +305,9 @@ def F_tot_vs_M(sigma, T, B, J, gJ, TC, lamb, Nm, theta_D, N, F0):
 
     Parameters
     ----------
-    sigma : 1D array
+    sigma : scalar, 1D array
         Reduced magnetization, between -1 and 1.
-    T : scalar, 1D array
+    T : scalar
         Temperature.
     B : scalar
         Applied magnetic field.
@@ -335,7 +345,7 @@ def F_totstable_vs_M(sigma, T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2,
 
     Parameters
     ----------
-    sigma : array
+    sigma : scalar, 1D array
             Reduced magnetization, from -1 to 1
     T : scalar
             Temperature
@@ -445,25 +455,30 @@ if __name__ == "__main__":
     # print F_L(Delta_T, theta_D1)
     # print F_L(TT, theta_D1) # should raise and exception
 
-    print F(5., 1., J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
+    # print F(5., 1., J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
     # print F(TT, BB, J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
 
-    # print transition_temp(TT, BB, J1, TC1, theta_D1, F01, lamb1, J2, TC2, theta_D2, F02, lamb2, gJ, Nm, N)
+    # print transition_temp(TT, BB, J1, TC1, theta_D1, F01, lamb1, J2,
+    #                       TC2, theta_D2, F02, lamb2, gJ, Nm, N)
 
-    # print F_stable(TT, BB, J1, J2, gJ, TC1, TC2, lamb1, lamb2, Nm, theta_D1, theta_D2, N, F01, F02)
+    # print F_stable(TT, BB, J1, J2, gJ, TC1, TC2, lamb1, lamb2, Nm,
+    #                theta_D1, theta_D2, N, F01, F02)
 
+    # print F_M_vs_M(1., 5., 0., J1, gJ, TC1, lamb1, Nm)
     # print F_M_vs_M(sig, 5., 0., J1, gJ, TC1, lamb1, Nm)
-    # print F_M_vs_M(sig, TT, BB, J1, gJ, TC1, lamb1, Nm)
 
-    # f_0T = F_totstable_vs_M(sig, T0, 0.)
-    # f = F_totstable_vs_M(sig, T0, B0)
+    # print F_Mstable_vs_M(1., 5., 0., J1, TC1, lamb1, J2, TC2, lamb2, gJ, Nm)
+    # print F_Mstable_vs_M(sig, 5., 0., J1, TC1, lamb1, J2, TC2, lamb2, gJ, Nm)
 
-    # mins_0T = argrelmin(f_0T)[0]
-    # mins = argrelmin(f)[0]
-    # maxs_0T = argrelmax(f_0T)[0]
-    # maxs = argrelmax(f)[0]
+    # print F_tot_vs_M(1., 5., 0., J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
+    # print F_tot_vs_M(sig, 5., 0., J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
 
-    # print mins_0T, f_0T[mins_0T], sig[mins_0T]
-    # print mins , f[mins], sig[mins]
-    # print maxs_0T
-    # print maxs
+    # print F_totstable_vs_M(1., 5., 0., J1, TC1, lamb1, theta_D1, F01, J2,
+    #                        TC2, lamb2, theta_D2, F02, gJ, Nm, N)
+    # print F_totstable_vs_M(sig, 5., 0., J1, TC1, lamb1, theta_D1, F01, J2,
+    #                        TC2, lamb2, theta_D2, F02, gJ, Nm, N)
+
+    # print F_tot_stable_Heating(TT, BB, J1, TC1, lamb1, theta_D1, F01, J2,
+    #                            TC2, lamb2, theta_D2, F02, gJ, Nm, N)
+    # print F_tot_stable_Cooling(TT, BB, J1, TC1, lamb1, theta_D1, F01, J2,
+    #                            TC2, lamb2, theta_D2, F02, gJ, Nm, N)

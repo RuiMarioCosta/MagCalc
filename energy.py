@@ -12,14 +12,11 @@ from scipy.optimize import fmin
 import magnetization as mag
 import entropy as ent
 import free_energy as free
-#from Variables import *
+
+mu_B = 5.7883818066*(10**(-5))  # eV T^-1
+k_B = 8.6173324*(10**(-5))  # eV K^-1
 
 
-#==============================================================================
-# Functions
-#==============================================================================
-
-# Lattice Energy of one Atom
 def E_L(T, theta_D):
     """Computes the lattice energy.
 
@@ -39,16 +36,16 @@ def E_L(T, theta_D):
     def f(x):
         return (x**3.)/(np.exp(x) - 1.)
 
-    integral = np.zeros(T.shape) # variable that stores the values
+    integral = np.zeros(T.shape)  # variable that stores the values
 
-    for i,t in enumerate(T): # calculate the integral for each temperature
+    for i, t in enumerate(T):  # calculate the integral for each temperature
         integral[i] = quad(f, 0., theta_D/t)[0]
 
     return k_B*(9./8.*theta_D + 9.*theta_D*((T/theta_D)**4.)*integral)
 
 
 # Magnetic Energy of one Moment
-def E_M(T, B, J, TC, lamb):
+def E_M(T, B, J, gJ, TC, lamb, Nm):
     """Computes the magnetic energy.
 
     Parameters
@@ -69,7 +66,7 @@ def E_M(T, B, J, TC, lamb):
     y : array
         Magnetic energy.
     """
-    sigma = mag.Brillouin(T, B, J, TC, lamb) # reduced magnetization
+    sigma = mag.Brillouin(T, B, J, TC, lamb)  # reduced magnetization
 
     return -gJ*mu_B*J*B*sigma - 3.*J/(J + 1.)*k_B*TC*(sigma**2.)
 
