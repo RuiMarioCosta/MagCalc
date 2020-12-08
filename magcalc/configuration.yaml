@@ -1,0 +1,51 @@
+Gd5Si2Ge2:
+  - phase: monoclinic
+    J: 3.5
+    gJ: 2
+    Tc: 251
+    theta_D: 250
+    F0: 0.36
+    Nm: 20
+    N: 36
+  - phase: orthorhombic(I)
+    J: 3.5
+    gJ: 2
+    Tc: 308
+    theta_D: 278
+    F0: 0
+    Nm: 20
+    N: 36
+Tb5Si2Ge2:
+  - phase: monoclinic
+    J: 6
+    gJ: 1.5
+    Tc: 112
+    theta_D: 153
+    F0: 0.11
+    Nm: 20
+    N: 36
+  - phase: orthorhombic(I)
+    J: 6
+    gJ: 1.5
+    Tc: 200
+    theta_D: 170
+    F0: 0
+    Nm: 20
+    N: 36
+Er5Si4:
+  - phase: monoclinic
+    J: 15/2.
+    gJ: 6/5.
+    Tc: 30
+    theta_D: 200
+    F0: 0.11
+    Nm: 20
+    N: 36
+  - phase: orthorhombic(I)
+    J: 15/2.
+    gJ: 6/5.
+    Tc: 38.5
+    theta_D: 175
+    F0: 0.143911006
+    Nm: 20
+    N: 36
