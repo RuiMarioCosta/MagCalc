@@ -7,7 +7,7 @@ Created on Mon Apr 04 17:04:06 2016
 
 from scipy.integrate import quad
 
-from magcalc import free_energy as free, magnetization as mag
+from deprecated import magnetization as mag, free_energy as free
 
 mu_B = 5.7883818066*(10**(-5))  # eV T^-1
 k_B = 8.6173324*(10**(-5))  # eV K^-1
@@ -222,7 +222,7 @@ def S_M_vs_M(sigma, T, B, J, gJ, TC, lamb, Nm):
 
 
 if __name__ == "__main__":
-    from magcalc.variables import *
+    from deprecated.variables import *
 
     # print S_M(5., 0., J1, gJ, TC1, lamb1, Nm)
     # print S_M(TT, BB, J1, gJ, TC1, lamb1, Nm)

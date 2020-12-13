@@ -8,7 +8,7 @@ Created on Mon Apr 04 17:42:01 2016
 from scipy.integrate import quad
 from scipy.optimize import fmin
 
-from magcalc import entropy as ent, magnetization as mag
+from deprecated import entropy as ent, magnetization as mag
 
 mu_B = 5.7883818066*(10**(-5))  # eV T^-1
 k_B = 8.6173324*(10**(-5))  # eV K^-1
@@ -443,7 +443,7 @@ def F_tot_stable_Cooling(T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2,
 
 
 if __name__ == "__main__":
-    from magcalc.variables import *
+    from deprecated.variables import *
 
     # print F_M(5., 1., J1, gJ, TC1, lamb1, Nm)
     # print F_M(5., Delta_B, J1, gJ, TC1, lamb1, Nm) # should raise and exception

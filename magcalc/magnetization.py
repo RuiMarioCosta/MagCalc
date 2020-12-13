@@ -1,248 +1,237 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 04 17:03:14 2016
-
-@author: Rui M. Costa
-"""
-
-from scipy.optimize import fsolve
-from scipy.optimize import fmin
-
-from magcalc import free_energy as free
-
-mu_B = 5.7883818066*(10**(-5))  # eV T^-1
-k_B = 8.6173324*(10**(-5))  # eV K^-1
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import optimize
+from constants import Constants
 
 
-def Brillouin(T, B, J, gJ, TC, lamb, Nm):
-    """Brillouin function. Calculates the reduced magnetization.
+class Magnetization(Constants):
+    def __init__(self, J, gJ, Tc, Nm):
+        self.J = J  # Total Angular Momentum, J
+        self.gJ = gJ  # Landé g-factor
+        self.Tc = Tc  # Curie Temperature, in Kelvin
+        self.Nm = Nm  # Number of Magnetic Moments in Primitive Cell
 
-    Parameters
-    ----------
-    T : scalar, 2D array
-        An array with the temperatures.
-    B : scalar, 2D array
-        An array with the magnetic fields.
-    J : scalar
-        Value of angular momentum.
-    TC : scalar
-        Value of Curie temperature.
-    lamb : scalar
-        Value of the strength of the parameter of the Molecular Field.
-    gJ : scaclar
-        Landé g-factor.
-    Nm : scalar
-        Number os spins.
+        # Curie Constants divided by Vacuum Permeability (C/mu_0)
+        self.const = (
+            (self.mu_B ** 2.0)
+            * self.Nm
+            * (self.gJ ** 2.0)
+            * self.J
+            * (self.J + 1.0)
+            / (3.0 * self.k_B)
+        )
+        self.lamb = (
+            self.Tc / self.const
+        )  # Value of the strength of the parameter of the Molecular Field
 
-    Returns
-    --------
-    y : scalar, array
-        An array with the values of the reduced magnetization.
-    """
+    def reduced_magnetization(self, T, B):
+        """Calculates the reduced magnetization (Brillouin function).
 
-    # Function for the computation of sigma
-    def B_J(sigma, T, B, J, TC, lamb):
-        h = B/(lamb*Nm*gJ*mu_B*J)
-        y = 3.*J/(J+1.)*(h + sigma)*TC/T
-        return sigma - (2.*J+1.)/(2.*J*np.tanh((2.*J+1.)*y/(2.*J))) + \
-            1./(2.*J*np.tanh(y/(2*J)))
+        Parameters
+        ----------
+        T : scalar
+            Temperature
+        B : scalar
+            Magnetic fields
 
-    sigma = np.zeros_like(T)  # variable that stores the values
+        Returns
+        --------
+        y : scalar
+            Reduced magnetization
+        """
 
-    if np.isscalar(T) and np.isscalar(B):  # if T and B are scalars
-        is_negative = False  # For negative fields
-        if B < 0:
-            is_negative = True
-            # Change sign, do calculations por positive magnetic field
-            B = -1*B
-        sigma = fsolve(B_J, 0.5, args=(T, B, J, TC, lamb))
-        if is_negative:
-            sigma = -1.*sigma  # Change back the sign
+        # Function for the computation of sigma
+        def brillouin(sigma, T, B):
+            h = B / (self.lamb * self.Nm * self.gJ * self.mu_B * self.J)
+            y = 3.0 * self.J / (self.J + 1.0) * (h + sigma) * self.Tc / T
+            return (
+                sigma
+                - (2.0 * self.J + 1.0)
+                / (2.0 * self.J * np.tanh((2.0 * self.J + 1.0) * y / (2.0 * self.J)))
+                + 1.0 / (2.0 * self.J * np.tanh(y / (2 * self.J)))
+            )
 
-    elif (len(T.shape) and len(B.shape)) == 2:  # if T and B are a 2D array
-        B_range, T_range = sigma.shape
-        # calculate reduced magnetization for each T and B
-        for i in range(B_range):
-            b = B[i, 0]
+        starting_estimate = 0.5 if B >= 0 else -0.5
+        sigma = optimize.fsolve(brillouin, starting_estimate, args=(T, B))
 
-            is_negative = False  # For negative fields
-            if b < 0:
-                is_negative = True
-                # Change sign, do calculations por positive magnetic field
-                b = -1*b
+        return sigma[0]
 
-            for j in range(T_range):
-                # magnetization
-                sig_sol = fsolve(B_J, 0.5, args=(T[0, j], b, J, TC, lamb))
+    def magnetic_entropy(self, T, B):
+        """Computes the magnetic entropy.
 
-                if is_negative:
-                    # if B < 0, change signal back to negative
-                    sigma[i, j] = -1.*sig_sol
-                else:
-                    sigma[i, j] = sig_sol  # if B >= 0
-    else:
-        raise Exception('The variables T and B should be both scalars or both 2D arrays.')
-    return sigma
+        Parameters
+        ----------
+        T : scalar
+            Temperatures.
+        B : scalar
+            Magnetic fields.
 
+        Returns
+        -------
+        y : scalar
+            Magnetic entropy.
+        """
+        # relative field to the saturation magnetization
+        h = B / (self.lamb * self.Nm * self.gJ * self.mu_B * self.J)
 
-def Brillouin_stable(T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1, theta_D2,
-                     F01, F02, gJ, Nm, N):
-    """Returns the magnetization of the system with lowest free energy, i.e.,
-    the stable one.
+        sigma = self.reduced_magnetization(T, B)  # reduced magnetization
 
-    Parameters
-    ----------
-    T : scalar, 2D array
-        Temperature.
-    B : scalar, 2D array
-        Magnetic fields.
-    J1, J2 : scalar
-        Value of angular momentum.
-    TC1, TC2 : scalar
-        Value of Curie temperatures.
-    lamb1, lamb2 : scalar
-        Value of the strength of the parameters of the Molecular Field.
-    theta_D1, theta_D2 : scalar
-        Debye temperatures of the material.
-    F01, F02 : scalar
-        Free eneries at 0 K.
+        y = (
+            3.0 * self.J / (self.J + 1.0) * (h + sigma) * self.Tc / T
+        )  # temporary variable
 
-    Returns
-    ---------
-    y : scalar, 2D array
-        Magnetization corresponding to the stable phase.
-    """
-    # magnetization of phase 1
-    sigma1 = Brillouin(T, B, J1, gJ, TC1, lamb1, Nm)
-    # magnetization of phase 2
-    sigma2 = Brillouin(T, B, J2, gJ, TC2, lamb2, Nm)
+        a = np.sinh((2.0 * self.J + 1.0) * y / (2.0 * self.J))
+        b = np.sinh(y / (2.0 * self.J))
 
-    # free energy of phase 1
-    F1 = free.F(T, B, J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
-    # free energy of phase 2
-    F2 = free.F(T, B, J2, gJ, TC2, lamb2, Nm, theta_D2, N, F02)
+        return self.k_B * self.Nm * (np.log(a / b) - sigma * y)
 
-    F_cross_index2 = (F1 > F2).astype(int)  # determine indices where F1 > F2
-    F_cross_index1 = (F1 < F2).astype(int)  # determine indices where F1 < F2
+    def magnetic_free_energy(self, T, B):
+        """Magnetic free energy of 1 spin.
 
-    # magnetization of stable phase
-    sigma_stable = F_cross_index1*sigma1 + F_cross_index2*sigma2
+        Parameters
+        ----------
+        T : scalar
+            Temperatures.
+        B : scalar
+            Magnetic fields.
 
-    return sigma_stable
+        Returns
+        -------
+        y : scalar
+            Magnetic free energy.
+        """
+        h = B / (
+            self.lamb * self.Nm * self.gJ * self.mu_B * self.J
+        )  # relative field to the saturation magnetization
+        sigma = self.reduced_magnetization(T, B)
+        y = 3.0 * self.J / (self.J + 1.0) * (h + sigma) * self.Tc / T
+        a = np.sinh((2.0 * self.J + 1.0) * y / (2.0 * self.J))
+        b = np.sinh(y / (2.0 * self.J))
 
+        return -T * self.Nm * self.k_B * np.log(a / b)
 
-def Susceptibility(T, B, J, gJ, TC, lamb, Nm):
-    """Returns the susceptibility. Valid for low values of B.
+    def magnetic_energy(self, T, B):
+        """Computes the magnetic energy.
 
-    Parameters
-    ----------
-    T : scalar, 2D array
-        An array with the temperatures.
-    B : scalar, 2D array
-        An array with the magnetic fields.
-    J : scalar
-        Value of angular momentum.
-    TC : scalar
-        Value of Curie temperature.
-    lamb : scalar
-        Value of the strength of the parameter of the Molecular Field.
-    gJ : scaclar
-        Landé g-factor.
-    Nm : scalar
-        Number os spins.
+        Parameters
+        ---------
+        T : scalar
+            Temperatures.
+        B : scalar
+            Magnetic fields.
 
-    Returns
-    --------
-    y : scalar, array
-        An array with the values of the reduced magnetization.
-    """
-    sigma = Brillouin(T, B, J, gJ, TC, lamb, Nm)
+        Returns
+        -------
+        y : scalar
+            Magnetic energy.
+        """
+        sigma = self.reduced_magnetization(T, B)
 
-    mu_0 = 4.*np.pi*(10**(-7))
+        return -self.gJ * self.mu_B * self.Nm * self.J * B * sigma - 3.0 * self.J / (
+            self.J + 1.0
+        ) * self.k_B * self.Nm * self.Tc * (sigma ** 2.0)
 
-    return mu_0*sigma/B
+    def plot_reduced_magnetization(self, T, B):
+        """Plots the reduced magnetization as a function of temperature or magnetic field.
 
+        Parameters
+        ----------
+        T : scalar, array
+            Array with the temperatures.
+        B : scalar, array
+            Magnetic fields.
+        """
+        plt.figure()
 
-def RedMag_heat(T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2, theta_D2,
-                F02, gJ, Nm, N):
-    """Reduced magnetization as a function of magnetic field on heating.
+        T = np.asarray(T)
+        B = np.asarray(B)
+        magnetization = []
+        if T.ndim == 1 and B.ndim == 0:
+            for t in T:
+                magnetization.append(self.reduced_magnetization(t, B))
+            plt.plot(T, magnetization, label="B=" + str(B) + "T")
+            plt.xlabel("T (K)")
+        elif B.ndim == 1 and T.ndim == 0:
+            for b in B:
+                magnetization.append(self.reduced_magnetization(T, b))
+            plt.plot(B, magnetization, label="T=" + str(T) + "K")
+            plt.xlabel("B (T)")
+        else:
+            raise ValueError("Temperature and Magnetic Field need to be a combination of array and scalar")
 
-    Parameters
-    ---------
-    T : 2D array
-        Temperatures.
-    B : 2D array
-        Magnetic fields
+        plt.title("Reduced Magnetization, $\\sigma$")
+        plt.legend(loc=0, fontsize="small")
+        plt.ylim(-1.05, 1.05)
+        plt.ylabel("$\\sigma(T, B)$")
+        plt.show()
 
-    Returns
-    -------
-    y : 2D array
-        Reduced magnetization on heating.
-    """
-    sigmaheat = np.zeros_like(T)
+    def plot_magnetic_free_energy(self, T, B):
+        """Plots the free energy as a function of temperature or magnetic field.
 
-    B_range, T_range = T.shape
-    for i in range(B_range):
-        # initial guess when heating, assuming it starts at low temperatures
-        sigma_guess = 1.
-        for j in range(T_range):
-            sol = fmin(free.F_totstable_vs_M,
-                       sigma_guess,
-                       args=(T[0, j], B[i, 0], J1, TC1, lamb1, theta_D1, F01,
-                             J2, TC2, lamb2, theta_D2, F02, gJ, Nm, N),
-                       full_output=1, disp=0)
-            sigma_guess = sol[0]  # new guess = last magnetization
-            sigmaheat[i, j] = sol[0]  # value of free energy at local minimum
+        Parameters
+        ----------
+        T : scalar, array
+            Array with the temperatures.
+        B : scalar, array
+            Magnetic fields.
+        """
+        plt.figure()
 
-    return sigmaheat
+        T = np.asarray(T)
+        B = np.asarray(B)
+        free_energy = []
+        if T.ndim == 1 and B.ndim == 0:
+            for t in T:
+                free_energy.append(self.magnetic_free_energy(t, B))
+            plt.plot(T, free_energy, label="B=" + str(B) + "T")
+            plt.xlabel("T (K)")
+        elif B.ndim == 1 and T.ndim == 0:
+            for b in B:
+                free_energy.append(self.magnetic_free_energy(T, b))
+            plt.plot(B, free_energy, label="T=" + str(T) + "K")
+            plt.xlabel("B (T)")
 
+        else:
+            raise ValueError("Temperature and Magnetic Field need to be a combination of array and scalar")
 
-def RedMag_cool(T, B, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2, theta_D2,
-                F02, gJ, Nm, N):
-    """Reduced magnetization as a function of magnetic field on cooling.
-
-    Parameters
-    ---------
-    T : 2D array
-        Temperatures.
-    B : 2D array
-        Magnetic fields
-
-    Returns
-    -------
-    y : 2D array
-        Reduced magnetization on cooling.
-    """
-    sigmacool = np.zeros_like(T)
-
-    B_range, T_range = T.shape
-    for i in range(B_range):
-        # initial guess when cooling, assuming it starts at high temperatures
-        sigma_guess = 0.
-        for j in range(T_range-1, -1, -1):
-            sol = fmin(free.F_totstable_vs_M,
-                       sigma_guess,
-                       args=(T[0, j], B[i, 0], J1, TC1, lamb1, theta_D1, F01,
-                             J2, TC2, lamb2, theta_D2, F02, gJ, Nm, N),
-                       full_output=1, disp=0)
-            sigma_guess = sol[0] + 0.001  # new guess = last magnetization
-            sigmacool[i, j] = sol[0]  # value of free energy at local minimum
-
-    return sigmacool
+        plt.title("Magnetic Free Energy, $F$")
+        plt.legend(loc=0, fontsize="small")
+        plt.ylabel("$F(T, B)$")
+        plt.show()
 
 
 if __name__ == "__main__":
-    from magcalc.variables import * # import variables to use in functions
-
-    # print Brillouin(5., Delta_B, J1, gJ, TC1, lamb1, Nm)
-    print Brillouin(TT, BB, J1, gJ, TC1, lamb1, Nm)
-
-    # print Brillouin_stable(TT, BB, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1,
-    #                        theta_D2, F01, F02, gJ, Nm, N)
-
-    # print Susceptibility(5., 1., J1, gJ, TC1, lamb1, Nm)
-
-    # print RedMag_heat(TT, BB, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2,
-    #                   theta_D2, F02, gJ, Nm, N)
-    # print RedMag_cool(TT, BB, J1, TC1, lamb1, theta_D1, F01, J2, TC2, lamb2,
-    #                   theta_D2, F02, gJ, Nm, N)
+    mag = Magnetization(1, 1, 123, 1)
+    # print(mag.reduced_magnetization(1, 0))
+    # print(mag.reduced_magnetization(1, 1))
+    # print(mag.reduced_magnetization(1, -1))
+    # print(mag.reduced_magnetization(100000, 0))
+    # print(mag.reduced_magnetization(100000, 100000))
+    # print(mag.reduced_magnetization(300, 0))
+    # print(mag.reduced_magnetization(300, 100000))
+    # print()
+    # print(mag.magnetic_entropy(1, 0))
+    # print(mag.magnetic_entropy(1, 1))
+    # print(mag.magnetic_entropy(1, -1))
+    # print(mag.magnetic_entropy(100000, 0))
+    # print(mag.magnetic_entropy(100000, 100000))
+    # print(mag.magnetic_entropy(300, 0))
+    # print(mag.magnetic_entropy(300, 100000))
+    # print()
+    # print(mag.magnetic_free_energy(1, 0))
+    # print(mag.magnetic_free_energy(1, 1))
+    # print(mag.magnetic_free_energy(1, -1))
+    # print(mag.magnetic_free_energy(100000, 0))
+    # print(mag.magnetic_free_energy(100000, 100000))
+    # print(mag.magnetic_free_energy(300, 0))
+    # print(mag.magnetic_free_energy(300, 100000))
+    print()
+    # temperature = np.arange(1, 200, 0.1)
+    # mag.plot_reduced_magnetization(T=temperature, B=0)
+    # magnetic_field = np.arange(0, 200, 0.1)
+    # mag.plot_reduced_magnetization(T=300, B=magnetic_field)
+    print()
+    temperature = np.arange(1, 200, 1)
+    mag.plot_magnetic_free_energy(T=temperature, B=0)
+    magnetic_field = np.arange(-200, 200, 1)
+    mag.plot_magnetic_free_energy(T=300, B=magnetic_field)

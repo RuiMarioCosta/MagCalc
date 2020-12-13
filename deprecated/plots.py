@@ -8,7 +8,7 @@ Created on Wed Feb 17 17:43:15 2016
 import matplotlib.pyplot as plt
 import os
 
-from magcalc import entropy as ent, free_energy as free, magnetization as mag
+from deprecated import entropy as ent, magnetization as mag, free_energy as free
 import energy as ener
 
 
@@ -35,7 +35,7 @@ def plt_M_vs_T(T, B, sigma_1, sigma_2, sigma_stable, Bstep=1, save=False):
         Save the data of this plot to a .txt file.
     """
 
-    print '\t Brillouin as a function of Temperature'
+    print('\t Brillouin as a function of Temperature')
 
     plt.figure()
 
@@ -100,7 +100,7 @@ def plt_M_vs_B(T, B, sigma_1, sigma_2, sigma_stable, Tstep=1, save=False):
         Save the data of this plot to a .txt file.
     """
 
-    print '\t Brillouin as a function of Magnetic Field'
+    print('\t Brillouin as a function of Magnetic Field')
 
     plt.figure()
 
@@ -163,7 +163,7 @@ def plt_M_vs_TB(T, B, sigma_stable,):
     sigma_stable : 2D array
         Arrays with the values of the respective magnetizations
     """
-    print '\t 2D plot of Brillouin_stable'
+    print('\t 2D plot of Brillouin_stable')
 
     plt.figure()
     plt.imshow(sigma_stable, aspect='auto', extent=(T[0], T[-1], B[-1], B[0]))
@@ -187,7 +187,7 @@ def plt_U_vs_T(T, B, sigma_1, sigma_2, Bstep=1, save=False,
     sigma_1, sigma_2 : 2D array
         Arrays with the values of the respective magnetizations
     """
-    print '\t Internal Magnetic Energy'
+    print('\t Internal Magnetic Energy')
 
     u_M1 = -gJ * mu_B * J1 * BB * sigma_1 - 3. * \
         J1 / (J1 + 1.) * k_B * TC1 * (sigma_1**2.)
@@ -227,7 +227,7 @@ def plt_M_hys_vs_T(T, B, sigma_heat, sigma_cool, Bstep=1, save=False):
     sigma_heat, sigma_cool : 2D array
         Arrays with the values of the respective magnetizations
     """
-    print '\t Magnetization Hysteresis as a function of Temperature'
+    print('\t Magnetization Hysteresis as a function of Temperature')
 
     plt.figure()
     for i in range(0, len(B), Bstep):
@@ -265,7 +265,7 @@ def plt_M_hys_vs_B(T, B, sigma_heat, sigma_cool, Tstep=1, save=False):
     sigma_heat, sigma_cool : 2D array
         Arrays with the values of the respective magnetizations
     """
-    print '\t Magnetization Hysteresis as a function of Magnetic Field'
+    print('\t Magnetization Hysteresis as a function of Magnetic Field')
 
     plt.figure()
     for j in range(0, len(T), Tstep):
@@ -276,7 +276,7 @@ def plt_M_hys_vs_B(T, B, sigma_heat, sigma_cool, Tstep=1, save=False):
                  label='Cooling, T=' + str(T[j]) + 'K')
 
         if save:
-            print save
+            print(save)
             if not os.path.exists("M_hys_vs_B"):
                 os.makedirs("M_hys_vs_B")
             zipped = zip(B, sigma_heat[j], sigma_cool[j])
@@ -338,7 +338,7 @@ def plt_S_M_vs_T(T, B, ent_1, ent_2, Bstep=1, save=False):
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Magnetic Entropy'
+    print('\t Magnetic Entropy')
 
     plt.figure()
     for i in range(0, len(B), Bstep):
@@ -368,7 +368,7 @@ def plt_S_L_vs_T(T, B, ent_1, ent_2, Bstep=1, save=False):
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Lattice Entropy'
+    print('\t Lattice Entropy')
 
     plt.figure()
     plt.plot(T, ent_1, label='1')
@@ -396,7 +396,7 @@ def plt_S_tot_vs_T(T, B, s_tot, Bstep=1, save=False):
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Entropy of stable phase'
+    print('\t Entropy of stable phase')
 
     plt.figure()
     for i in range(0, len(B), Bstep):
@@ -490,7 +490,7 @@ def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=1):
         Enables the conversion from eV/K to J/Kg K (or the conversion used in
         Variables.py).
     """
-    print '\t Maximum Entropy Change as a Function of Applied Magnetic Field'
+    print('\t Maximum Entropy Change as a Function of Applied Magnetic Field')
 
     s_B = np.zeros(np.shape(B))
 
@@ -517,7 +517,7 @@ def plt_max_DeltaS_vs_B(B, s_tot, save=False, conv=1):
 
 def plt_S_M_vs_M(sigma, T, B, J1, J2, gJ, TC1, TC2, lamb1, lamb2, Nm,
                  Tstep=1, Bstep=1, save=False):
-    print '\t Maximum Entropy Change as a Function of Applied Magnetic Field'
+    print('\t Maximum Entropy Change as a Function of Applied Magnetic Field')
 
     for j in range(0, len(B), Bstep):
         plt.figure()
@@ -564,7 +564,7 @@ def plt_F_vs_T(T, B, free_ener_1, free_ener_2, free_stable, Bstep=1,
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Free Energy as a function of Temperature'
+    print('\t Free Energy as a function of Temperature')
 
     plt.figure()
     for i in range(0, len(B), Bstep):
@@ -609,7 +609,7 @@ def plt_F_vs_B(T, B, free_ener_1, free_ener_2, free_stable, Tstep=1,
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Free Energy as a function of Magnetic Field'
+    print('\t Free Energy as a function of Magnetic Field')
 
     plt.figure()
     for i in range(0, len(T), Tstep):
@@ -634,13 +634,13 @@ def plt_transition_temp(T, B, save, J1, TC1, theta_D1, F01, lamb1,
     B : 2D array
             Applied Magnetic Field
     """
-    print '\t Transition Temperatures'
+    print('\t Transition Temperatures')
 
     Ts = free.transition_temp(T, B, J1, TC1, theta_D1, F01, lamb1,
                               J2, TC2, theta_D2, F02, lamb2, gJ, Nm, N, *args)
 
     if B.shape[0] == 1:  # if there is only value for the magnetic field
-        print Ts
+        print(Ts)
 
     else:  # if there is an array for the magnetic field
         plt.figure()
@@ -679,7 +679,7 @@ def plt_F_M_vs_M(sigma, T, B, J1, TC1, lamb1, J2, TC2, lamb2, gJ, Nm,
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Magnetic Free Energy as a function of Magnetization'
+    print('\t Magnetic Free Energy as a function of Magnetization')
 
     Delta_T = T[0]
     Delta_B = B[:, 0]
@@ -721,7 +721,7 @@ def plt_F_M_vs_T(T, B, J1, J2, TC1, TC2, lamb1, lamb2, gJ, Nm, Bstep=1,
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Free Energy as a function of Temperature'
+    print('\t Free Energy as a function of Temperature')
 
     free_ener_1 = free.F_M(T, B, J1, gJ, TC1, lamb1, Nm)
     free_ener_2 = free.F_M(T, B, J2, gJ, TC2, lamb2, Nm)
@@ -760,7 +760,7 @@ def plt_F_L_vs_T(T, theta_D1, theta_D2):
     T : array
         Temperatures.
     """
-    print '\t Lattice Free Energy as a function of Temperature'
+    print('\t Lattice Free Energy as a function of Temperature')
 
     f_L1 = free.F_L(T, theta_D1)
     f_L2 = free.F_L(T, theta_D2)
@@ -796,7 +796,7 @@ def plt_Ftot_vs_M(sigma, T, B, J1, J2, TC1, TC2, lamb1, lamb2, theta_D1,
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Total Free Energy as a function of Magnetization'
+    print('\t Total Free Energy as a function of Magnetization')
 
     for j in range(0, len(B), Bstep):
         plt.figure()
@@ -855,7 +855,7 @@ def plt_F_heatcool_vs_T(T, B, f_heat, f_cool, Bstep=1, save=False):
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Total Free Energy on Heating and Cooling'
+    print('\t Total Free Energy on Heating and Cooling')
 
     plt.figure()
     for j in range(0, len(B), Bstep):
@@ -914,7 +914,7 @@ def plt_E_M_vs_T(T, B, em1, em2, Bstep=1):
     Bstep : int
         Index step when plotting for several magnetic fields.
     """
-    print '\t Magnetic Energy as a function of Temperature'
+    print('\t Magnetic Energy as a function of Temperature')
 
     plt.figure()
     for i in range(0, len(B), Bstep):
@@ -937,7 +937,7 @@ def plt_E_L_vs_T(T, el1, el2):
     el1, el2 : 2D array
         Lattice energies of phases 1 and 2.
     """
-    print '\t Lattice Energy as a function of Temperature'
+    print('\t Lattice Energy as a function of Temperature')
 
     plt.figure()
     plt.plot(T, el1, label='$E^L_1$')
@@ -963,7 +963,7 @@ def plt_Etot_vs_T(T, B, etot1, etot2, Bstep=1):
     Bstep : int
         Index step when plotting for several magnetic fields.
     """
-    print '\t Total Energy as a function of Temperature'
+    print('\t Total Energy as a function of Temperature')
 
     plt.figure()
     for i in range(0, len(B), Bstep):
@@ -995,7 +995,7 @@ def plt_E_M_vs_M(sigma, T, B, Tstep=1, Bstep=1, save=False):
     save : bool
         Save the data of this plot to a .txt file.
     """
-    print '\t Magnetic Energy as a function of Magnetization'
+    print('\t Magnetic Energy as a function of Magnetization')
 
     for j in range(0, len(B), Bstep):
         plt.figure()
@@ -1035,7 +1035,7 @@ def plt_M(MvsT=0, MvsB=0, MvsTB=0, UvsT=0, M_hys_vs_T=0, save=0, TT=None,
         Plots the hysteresis of the magnetization vs tempeperature, magnetic
         field and both.
     """
-    print 'Magnetization'
+    print('Magnetization')
 
     if MvsT or MvsB or MvsTB or UvsT:
         # magnetization of phase 1
@@ -1103,7 +1103,7 @@ def plt_S(S_M_vs_T=0, S_L_VS_T=0, S_tot_vs_T=0, DeltaS_vs_T=0,
     S_M_vs_M : bool
         Plots the magnetic entropy as a function of the reduced magnetization.
     """
-    print 'Entropy'
+    print('Entropy')
 
     if S_M_vs_T:
         s_M1 = ent.S_M(TT, BB, J1, gJ, TC1, lamb1, Nm)
@@ -1125,16 +1125,16 @@ def plt_S(S_M_vs_T=0, S_L_VS_T=0, S_tot_vs_T=0, DeltaS_vs_T=0,
             plt_S_tot_vs_T(Delta_T, Delta_B, s_tot, Bstep=1, save=save)
 
         if DeltaS_vs_T:
-            print '1'
+            print('1')
             s_M_tot = ent.S_M_tot(TT, BB, J1, J2, gJ, TC1, TC2, theta_D1,
                                   theta_D2, F01, F02, lamb1, lamb2, N, Nm)
-            print '2'
+            print('2')
             s_L_tot = ent.S_L_tot(TT, BB, J1, J2, gJ, TC1, TC2, theta_D1,
                                   theta_D2, F01, F02, lamb1, lamb2, N, Nm)
-            print '3'
+            print('3')
             plt_DeltaS_vs_T(Delta_T, Delta_B, s_tot, s_M_tot,
                             s_L_tot, Bstep=1, save=save, conv=1)
-            print '4'
+            print('4')
         if max_DeltaS_vs_B:
             plt_max_DeltaS_vs_B(Delta_B, s_tot, save=save, conv=1)
 
@@ -1170,7 +1170,7 @@ def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
         Plots the free energies following the metastable minimums on heating
         and cooling.
     """
-    print 'Free Energies'
+    print('Free Energies')
 
     if FvsT or FvsB:
         free_ener_1 = free.F(TT, BB, J1, gJ, TC1, lamb1, Nm, theta_D1, N, F01)
@@ -1230,7 +1230,7 @@ def plt_F(FvsT=0, FvsB=0, trans_temp=0, F_M_vs_T=0, F_M_vs_M=0, F_L_vs_T=0,
     return None
 
 
-def plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0):
+def plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0, save=False):
     """Menu for the energy plots.
 
     Parameters
@@ -1244,7 +1244,7 @@ def plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0):
     E_M_vs_M : bool
         Plots the magnetic energy vs reduced magnetization.
     """
-    print 'Energy'
+    print('Energy')
 
     if EMvsT:
         em1 = Nm * ener.E_M(TT, BB, J1, TC1, lamb1)
@@ -1271,9 +1271,9 @@ def plt_E(EMvsT=0, ELvsT=0, EtotvsT=0, E_M_vs_M=0):
 
 
 if __name__ == "__main__":
-    from magcalc.variables import *
+    from deprecated.variables import *
 
-    print 'Plotting...\n'
+    print('Plotting...\n')
 
     plt_M(MvsT=0, MvsB=0, MvsTB=0, UvsT=0, M_hys_vs_T=0, save=0, TT=TT, BB=BB,
           J1=J1, J2=J2, TC1=TC1, TC2=TC2, lamb1=lamb1, lamb2=lamb2,
