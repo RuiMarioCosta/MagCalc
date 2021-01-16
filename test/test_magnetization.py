@@ -54,4 +54,4 @@ class TestMagnetization:
 
         result = mag.magnetic_entropy(temperature, magnetic_field)
 
-        assert result - expected < 1e-10
+        assert abs(result - expected) < 1e-10

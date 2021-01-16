@@ -5,13 +5,13 @@ from magnetocaloric import Magnetocaloric
 
 def print_list_of_materials():
     with open('magcalc/configuration.yaml') as file:
-        data = yaml.load(file)
+        data = yaml.safe_load(file)
     print('\n'.join(data.keys()))
 
 
 def read_configuration(arg, configuration_file='magcalc/configuration.yaml'):
     with open(configuration_file) as file:
-        data = yaml.load(file)
+        data = yaml.safe_load(file)
 
     try:
         data = data[arg]
